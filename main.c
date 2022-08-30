@@ -2,16 +2,26 @@
 
 int main()
 {
+    clearDisplay();
+
+    rootPath = (path) calloc(1024, sizeof(char));
+    getcwd(rootPath, 1024);
+
+    // initialise the current directory as the root directory
+    currDirectory = rootPath;
+
+    //initialse previous directory as the root directory
+    prevDirectory = rootPath;
+
     while (1)
     {
-        prompt();
-        char a[256];
-        scanf("%s", a);
-        // TAKE INPUT HERE
+        //check which directory user is in and prompt user
+        currDirectory = checkDirectory();
+        prompt(currDirectory);
 
-        if(!strcmp(strtok(a, " \t"), "echo "))
-        {
-            echo(strtok(NULL, " \t"));
-        }
+        bufferInput = (input) calloc(1024, sizeof(char));
+        fgets(bufferInput, 1024, stdin);
+
+        handleInput();
     }
 }

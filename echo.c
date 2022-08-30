@@ -1,6 +1,11 @@
 #include "headers.h"
 
-void echo(char* inputString)
+void performEcho()
 {
-    printf("%s\n", inputString);
+    if(!strcmp(arguments, ""))
+    {
+        printf("incorrect format. Please enter arguments after echo\n");
+        return;
+    }
+    printf("%s", arguments);
 }

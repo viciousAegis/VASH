@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "libgen.h": "c",
+        "pwd.h": "c",
+        "stat.h": "c",
+        "wait.h": "c",
+        "stdio.h": "c",
+        "headers.h": "c",
+        "inputhandler.h": "c"
+    }
+}

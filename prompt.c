@@ -1,11 +1,12 @@
 #include "headers.h"
 
-void prompt() {
-    printf("vash ");
-    char name[100];
+void prompt(path directory) {
+    //name of shell
+    printf("%s ", vash);
 
     struct passwd *passwd = getpwuid(getuid());
-    
-    gethostname(name, 100);
-    printf("<%s@%s:%s>$ ", passwd->pw_name , name);
+
+    input hostnameBuffer = (input) calloc(1024, sizeof(char));
+    gethostname(hostnameBuffer, 100);
+    printf("<%s@%s:%s>$ ", passwd->pw_name , hostnameBuffer, directory);
 }

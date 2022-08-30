@@ -1,6 +1,13 @@
 #ifndef __TRIVIAL_FUNCTIONS_H
 #define __TRIVIAL_FUNCTIONS_H
 
-char* get_command(char* buffer);
+#include "headers.h"
+
+void clearDisplay();
+
+// check the directory and compare with root direcotry
+path checkDirectory();
+
+void performExit();
 
 #endif

@@ -1,2 +1,2 @@
 main:
-	gcc -g main.c prompt.c echo.c
+	gcc -g *.c
