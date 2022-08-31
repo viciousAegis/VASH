@@ -4,6 +4,8 @@ int main()
 {
     clearDisplay();
 
+    initialPrompt();
+
     rootPath = (path) calloc(1024, sizeof(char));
     getcwd(rootPath, 1024);
 

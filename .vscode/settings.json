@@ -6,6 +6,8 @@
         "wait.h": "c",
         "stdio.h": "c",
         "headers.h": "c",
-        "inputhandler.h": "c"
+        "inputhandler.h": "c",
+        "fcntl.h": "c",
+        "tcl.h": "c"
     }
 }

@@ -13,6 +13,4 @@ void goToSpecifiedDirectory();
 
 int changeDir();
 
-char* removeTrailingEscape(path relFilePath);
-
 #endif

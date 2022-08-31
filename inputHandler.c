@@ -1,43 +1,88 @@
 #include "headers.h"
 
-void parseInput()
-{
-    commandWord = strtok(bufferInput, " \t");
+input* commands;
+int cmdCount;
 
-    arguments = (input) calloc(1024, sizeof(char));
-    for(char* word = strtok(NULL, ";"); word; word = strtok(NULL, ";"))
+int getCommands()
+{
+    // handle pressing enter
+    if(!strcmp(bufferInput, "\n"))
+        return 0;
+
+    commands = (input*) calloc(100, sizeof(input));
+    cmdCount = 0;
+    for(char* cmd = strtok(bufferInput, ";"); cmd; cmd = strtok(NULL, ";"))
     {
-        arguments = strcat(arguments, word);
+        commands[cmdCount] = (input) calloc(strlen(cmd), sizeof(char));
+        strcpy(commands[cmdCount++], cmd);
+    }
+
+    return 1;
+}
+
+void parseInput(input command)
+{
+    command = removeTrailingEscape(command);
+    
+    commandWord = strtok(command, " \t");
+
+    arguments = (input*) calloc(1024, sizeof(input));
+    argCount = 0;
+    
+    for(char* word = strtok(NULL, " \t"); word; word = strtok(NULL, " \t"))
+    {
+        arguments[argCount] = (input) calloc(strlen(word), sizeof(char));
+        strcpy(arguments[argCount++], word);
+    }
+    if(argCount == 0)
+    {
+        arguments[argCount] = (input) calloc(1, sizeof(char));
+        strcpy(arguments[argCount++], "");
     }
 }
 
 void handleInput()
 {
-    parseInput();
+    int flag = getCommands();
 
-    if(checkExit())
-    {
-        performExit();
-    }
-    
-    if(checkEcho())
-    {
-        performEcho();
-    }
-    else if(checkPWD())
-    {
-        performPWD();
-    }
-    else if(checkCD())
-    {
-        performCD();
-    }
+    if(!flag)
+        return;
 
+    for(int i = 0; i < cmdCount; i++)
+    {
+        parseInput(commands[i]);
+
+        if(checkExit())
+        {
+            performExit();
+        }
+
+        if(checkEcho())
+        {
+            performEcho();
+        }
+        else if(checkPWD())
+        {
+            performPWD();
+        }
+        else if(checkCD())
+        {
+            performCD();
+        }
+        else if(checkClear())
+        {
+            clearDisplay();
+        }
+        else
+        {
+            cmdNotFound();
+        }
+    }
 }
 
 int checkExit()
 {
-    if(!strcmp(commandWord,"exit") || !strcmp(commandWord,"exit\n"))
+    if(!strcmp(commandWord,"exit") || !strcmp(commandWord, "quit") || !strcmp(commandWord, "q"))
     {
         return 1;
     }
@@ -46,7 +91,7 @@ int checkExit()
 
 int checkEcho()
 {
-    if(!strcmp(commandWord,"echo") || !strcmp(commandWord,"echo\n"))
+    if(!strcmp(commandWord,"echo"))
     {
         return 1;
     }
@@ -55,7 +100,7 @@ int checkEcho()
 
 int checkPWD()
 {
-    if(!strcmp(commandWord,"pwd") || !strcmp(commandWord,"pwd\n"))
+    if(!strcmp(commandWord,"pwd"))
     {
         return 1;
     }
@@ -64,9 +109,34 @@ int checkPWD()
 
 int checkCD()
 {
-    if(!strcmp(commandWord,"cd") || !strcmp(commandWord,"cd\n"))
+    if(!strcmp(commandWord,"cd"))
     {
         return 1;
     }
     return 0;
 }
+
+int checkClear()
+{
+    if(!strcmp(commandWord,"clear") || !strcmp(commandWord,"c"))
+    {
+        return 1;
+    }
+    return 0;
+}
+
+char* removeTrailingEscape(char* path)
+{
+    int len = strlen(path);
+    if(path[len - 1] == '\n')
+    {
+        path[len - 1] = '\0';
+    }
+    return path;
+}
+
+void cmdNotFound()
+{
+    printf("%s: Command not found: %s\n", vash, commandWord);
+}
+

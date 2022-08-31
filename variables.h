@@ -18,7 +18,9 @@ path rootPath;
 
 input bufferInput;
 
-input arguments;
+input* arguments;
+
+int argCount;
 
 path currDirectory;
 

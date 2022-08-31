@@ -12,6 +12,8 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <tcl.h>
+#include <fcntl.h>
 #include "prompt.h"
 #include "echo.h"
 #include "variables.h"

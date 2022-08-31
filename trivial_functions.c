@@ -18,7 +18,7 @@ path checkDirectory()
 
     if(flag > 0)
     {
-        //handle the case of parent directory
+        sprintf(newDirectory, "%s", directory);
     }
     else if(flag < 0)
     {
@@ -36,8 +36,9 @@ path checkDirectory()
 
 void performExit()
 {
-
+        clearDisplay();
         printf("Thank you for using VASH :)... Now exiting\n.\n.\n.\n");
-        printf("Vicious A3gis Shell © Akshit Sinha, 2022 \n");
+        printf("Vicious A3gis Shell © Akshit Sinha, 2022 \n\n\n");
+        initialPrompt();
         exit(0);
 }

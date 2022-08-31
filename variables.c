@@ -13,6 +13,6 @@ path prevDirectory;
 input bufferInput;
 
 // arguments for the command
-input arguments;
+input* arguments;
 
 path currDirectory;
