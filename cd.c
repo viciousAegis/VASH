@@ -14,12 +14,25 @@ path relFilePath;
 
 void performCD()
 {
+    if(argCount > 1)
+    {
+        printf("cd: too many arguments\n");
+        return;
+    }
+    
     absoluteFilePath = (path) calloc(1024, sizeof(char));
-    relFilePath = arguments;
+    relFilePath = arguments[0];
 
-    relFilePath = removeTrailingEscape(relFilePath);
+    if(strlen(relFilePath) > 1 && relFilePath[0] == '~')
+    {
+        currDirectory = rootPath;
+        relFilePath = removeLeadingTilde(relFilePath);
+    }
+    else
+    {
+        getcwd(currDirectory, 1024);
+    }
 
-    getcwd(currDirectory, 1024);
 
     //checking for flags
     if(!strcmp(relFilePath, "") || !strcmp(relFilePath, "~"))
@@ -31,7 +44,7 @@ void performCD()
         prevDirectory = currDirectory;
         //do nothing
     }
-    else if(!strcmp(relFilePath, ".."))
+    else if(!strcmp(relFilePath, "..") || !strcmp(relFilePath, "/.."))
     {
         //go up one directory
         goUpOneDirectory();
@@ -59,10 +72,7 @@ void goUpOneDirectory()
 {
     prevDirectory = currDirectory;
 
-    if(!strcmp(currDirectory,rootPath)) {
-        performPWD();
-        return;
-    }
+
 
     char testByte = currDirectory[strlen(currDirectory) - 1];
     while(testByte != '/')
@@ -74,6 +84,7 @@ void goUpOneDirectory()
 
     absoluteFilePath = currDirectory;
     changeDir();
+    performPWD();
 }
 
 void goToPreviousDirectory()
@@ -82,6 +93,9 @@ void goToPreviousDirectory()
     prevDirectory = currDirectory;
     
     changeDir();
+
+    // print the new directory
+    performPWD();
 }
 
 void goToSpecifiedDirectory()
@@ -106,12 +120,11 @@ int changeDir()
     return flag;
 }
 
-char* removeTrailingEscape(char* relFilePath)
+path removeLeadingTilde(path relFilePath)
 {
-    int len = strlen(relFilePath);
-    if(relFilePath[len - 1] == '\n')
+    if(relFilePath[0] == '~')
     {
-        relFilePath[len - 1] = '\0';
+        relFilePath++;
     }
     return relFilePath;
 }
