@@ -72,8 +72,6 @@ void goUpOneDirectory()
 {
     prevDirectory = currDirectory;
 
-
-
     char testByte = currDirectory[strlen(currDirectory) - 1];
     while(testByte != '/')
     {
@@ -84,7 +82,6 @@ void goUpOneDirectory()
 
     absoluteFilePath = currDirectory;
     changeDir();
-    performPWD();
 }
 
 void goToPreviousDirectory()
