@@ -37,7 +37,7 @@ void parseInput(input command)
     if(argCount == 0)
     {
         arguments[argCount] = (input) calloc(1, sizeof(char));
-        strcpy(arguments[argCount++], "");
+        strcpy(arguments[argCount], "");
     }
 }
 
@@ -72,6 +72,10 @@ void handleInput()
         else if(checkClear())
         {
             clearDisplay();
+        }
+        else if(checkLS())
+        {
+            performLS();
         }
         else
         {
@@ -119,6 +123,15 @@ int checkCD()
 int checkClear()
 {
     if(!strcmp(commandWord,"clear") || !strcmp(commandWord,"c"))
+    {
+        return 1;
+    }
+    return 0;
+}
+
+int checkLS()
+{
+    if(!strcmp(commandWord,"ls"))
     {
         return 1;
     }

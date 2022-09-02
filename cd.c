@@ -97,8 +97,14 @@ void goToPreviousDirectory()
 
 void goToSpecifiedDirectory()
 {
+        if(relFilePath[0] == '/')
+        {
+            absoluteFilePath = relFilePath;
+        }
+        else
+        {
         sprintf(absoluteFilePath, "%s/%s", currDirectory, relFilePath);
-
+        }
         int flag = changeDir();
         if(flag == 0) {
             prevDirectory = currDirectory;

@@ -13,6 +13,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <tcl.h>
+#include <dirent.h>
 #include <fcntl.h>
 #include "prompt.h"
 #include "echo.h"
@@ -21,5 +22,6 @@
 #include "inputHandler.h"
 #include "pwd.h"
 #include "cd.h"
+#include "ls.h"
 
 #endif

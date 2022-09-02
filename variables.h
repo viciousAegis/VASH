@@ -10,6 +10,8 @@ typedef char* input;
 // command word
 typedef char* cmdWord;
 
+typedef char* fileName;
+
 char* vash;
 
 cmdWord commandWord;

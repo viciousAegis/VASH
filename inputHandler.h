@@ -18,6 +18,8 @@ int checkPWD();
 
 int checkCD();
 
+int checkLS();
+
 int checkClear();
 
 char* removeTrailingEscape(path);
