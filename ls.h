@@ -9,10 +9,16 @@ void printDir();
 
 void printAllDir();
 
-void initMyDir();
+void printDirWithInfo();
+
+char* getFilePermissions();
+
+int initMyDir();
 
 void performLS();
 
 void initFileNames();
+
+void handleFiles(char*);
 
 #endif

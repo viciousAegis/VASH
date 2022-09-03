@@ -14,7 +14,7 @@ void initialPrompt()
 
 void prompt(path directory) {
     //name of shell
-    printf("\033[1;31m");
+    printf("\033[0;35m");
     printf("%s ", vash);
 
     struct passwd *passwd = getpwuid(getuid());
@@ -25,7 +25,7 @@ void prompt(path directory) {
     printf("\033[1;32m");
     printf("<%s@%s:", passwd->pw_name, hostnameBuffer);
 
-    printf("\033[1;34m");
+    printf("\033[0;36m");
     printf("%s", directory);
 
     printf("\033[1;32m");

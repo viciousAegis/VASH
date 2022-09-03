@@ -8,7 +8,9 @@
 #include <libgen.h>
 #include <sys/types.h>
 #include <pwd.h>
-#include <errno.h>   
+#include <grp.h>
+#include <errno.h>
+#include <time.h>   
 #include <sys/wait.h>
 #include <sys/stat.h>
 #include <sys/types.h>

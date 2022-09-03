@@ -14,6 +14,12 @@
 */
 
 fileName* fileNames;
+/*
+0- file
+1- directory
+-1 - executable
+*/
+int* areDirs;
 int fileCount = 0;
 
 char* flags;
@@ -56,11 +62,23 @@ void performLS()
     {
         // ls -flags
         initMyDir(".");
-        if(strlen(flags))
+        if(strlen(flags) > 0)
         {
-            if(strchr(flags, 'a'))
+            if(!strcmp(flags, "a"))
             {
                 printAllDir();
+            }
+            else if(!strcmp(flags, "l"))
+            {
+                printDirWithInfo(".", 0);
+            }
+            else if(strchr(flags, 'a') && strchr(flags, 'l'))
+            {
+                printDirWithInfo(".", 1);
+            }
+            else
+            {
+                printf("Invalid flags\n");
             }
         }
         else // ls
@@ -73,20 +91,43 @@ void performLS()
         // ls <dir> <dir> <dir>
         for(int i = 0; i < dirCount; i++)
         {
-            initMyDir(directories[i]);
-            printf("%s:\n", directories[i]);
-            if(strlen(flags))
+            int flag = initMyDir(directories[i]);
+            if(flag == -1)
             {
-                if(strchr(flags, 'a'))
+                // that means its not a directory
+                handleFiles(directories[i]);
+                continue;
+            }
+
+            if(dirCount != 1)
+                printf("%s:\n", directories[i]);
+
+            if(strlen(flags)>0)
+            {
+                if(!strcmp(flags, "a"))
                 {
                     printAllDir();
+                }
+                else if(!strcmp(flags, "l"))
+                {
+                    printDirWithInfo(directories[i], 0);
+                }
+                else if(strchr(flags, 'a') && strchr(flags, 'l'))
+                {
+                    printDirWithInfo(directories[i], 1);
+                }
+                else
+                {
+                    printf("Invalid flags\n");
                 }
             }
             else // ls
             {
                 printDir();
             }
-            printf("\n");
+
+            if(i != dirCount - 1)
+                printf("\n");
         }
     }
 }
@@ -103,12 +144,16 @@ void initFileNames()
     {
         fileNames[i] = (fileName) calloc(1024, sizeof(char));
     }
+
+    areDirs = (int*) calloc(100, sizeof(int));
 }
 
-void initMyDir(path dirPath)
+int initMyDir(path dirPath)
 {
     DIR *dir;
     struct dirent *ent;
+    struct stat fileStat;
+
     if ((dir = opendir(dirPath)) != NULL)
     {
         fileCount = 0;
@@ -120,11 +165,32 @@ void initMyDir(path dirPath)
     }
     else
     {
-        perror("");
-        exit(1);
+        return -1;
     }
 
     qsort(fileNames, fileCount, sizeof(fileName), compare);
+
+    for(int i = 0; i < fileCount; i++)
+    {
+        path filePath = (path) calloc(1024, sizeof(char));
+        sprintf(filePath, "%s/%s", dirPath, fileNames[i]);
+
+        stat(filePath, &fileStat);
+        if(S_ISDIR(fileStat.st_mode))
+        {
+            areDirs[i] = 1;
+        }
+        else if(fileStat.st_mode & S_IXUSR || fileStat.st_mode & S_IXGRP || fileStat.st_mode & S_IXOTH)
+        {
+            areDirs[i] = -1;
+        }
+        else
+        {
+            areDirs[i] = 0;
+        }
+    }
+
+    return 0;
 }
 
 void printDir()
@@ -132,7 +198,24 @@ void printDir()
     for(int i = 0; i < fileCount; i++)
     {
         if(fileNames[i][0] != '.')
-            printf("%s\n", fileNames[i]);
+        {
+            if(areDirs[i] == 1)
+            {
+                printf("\033[1;34m");
+                printf("%s\n", fileNames[i]);
+                printf("\033[0m");
+            }
+            else if(areDirs[i] == -1)
+            {
+                printf("\033[1;31m");
+                printf("%s\n", fileNames[i]);
+                printf("\033[0m");
+            }
+            else
+            {
+                printf("%s\n", fileNames[i]);
+            }
+        }
     }
 }
 
@@ -140,6 +223,147 @@ void printAllDir()
 {
     for(int i = 0; i < fileCount; i++)
     {
-        printf("%s\n", fileNames[i]);
+        if(areDirs[i] == 1)
+        {
+            // directories colored in blue
+            printf("\033[1;34m");
+            printf("%s\n", fileNames[i]);
+            printf("\033[0m");
+        }
+        else if(areDirs[i] == -1)
+        {
+            // executable files colored in red
+            printf("\033[1;31m");
+            printf("%s\n", fileNames[i]);
+            printf("\033[0m");
+        }
+        else
+        {
+            // files colored in white
+            printf("%s\n", fileNames[i]);
+        }
     }
+}
+
+void printDirWithInfo(path dirPath, int isAll)
+{
+    struct stat fileStat;
+    stat(dirPath, &fileStat);
+    int blockSize = fileStat.st_blocks;
+
+    printf("total %d\n", blockSize);
+
+    for(int i = 0; i < fileCount; i++)
+    {
+        if(!isAll)
+        {
+            if(fileNames[i][0] == '.')
+                continue;
+        }
+        path absPath = (path) calloc(1024, sizeof(char));
+        sprintf(absPath, "%s/%s", dirPath, fileNames[i]);
+
+        char* permissions = (char*) calloc(10, sizeof(char));
+        int hardLinks;
+        char* owner = (char*) calloc(30, sizeof(char));
+        char* group = (char*) calloc(30, sizeof(char));
+        char* size = (char*) calloc(10, sizeof(char));
+        char* date = (char*) calloc(30, sizeof(char));
+        
+        permissions = getFilePermissions(absPath);
+
+        stat(absPath, &fileStat);
+        
+        hardLinks = fileStat.st_nlink;
+
+        struct passwd *pw = getpwuid(fileStat.st_uid);
+        struct group *gr = getgrgid(fileStat.st_gid);
+
+        time_t rawtime = fileStat.st_mtime;
+        struct tm * timeinfo = localtime(&rawtime);
+        strftime(date, 30, "%b %d %H:%M", timeinfo);
+
+        sprintf(owner, "%s", pw->pw_name);
+        sprintf(group, "%s", gr->gr_name);
+        sprintf(size, "%lld", fileStat.st_size);
+
+        char* outputString =  (char*) calloc(1024, sizeof(char));
+        sprintf(outputString, "%s %3d %-10s %-5s %8s %-10s ", permissions, hardLinks, owner, group, size, date);
+
+        printf("%s", outputString);
+
+        if(areDirs[i] == 1)
+        {
+            printf("\033[1;34m");
+            printf("%-10s\n", fileNames[i]);
+            printf("\033[0m");
+        }
+        else if(areDirs[i] == -1)
+        {
+            printf("\033[1;31m");
+            printf("%-10s\n", fileNames[i]);
+            printf("\033[0m");
+        }
+        else
+        {
+            printf("%-10s\n", fileNames[i]);
+        }
+    }
+}
+
+char* getFilePermissions(path filePath)
+{
+    char* permissions = (char*) calloc(10, sizeof(char));
+    struct stat fileStat;
+
+    stat(filePath, &fileStat);
+
+    permissions[0] = S_ISDIR(fileStat.st_mode) ? 'd' : '-';
+    permissions[1] = fileStat.st_mode & S_IRUSR ? 'r' : '-';
+    permissions[2] = fileStat.st_mode & S_IWUSR ? 'w' : '-';
+    permissions[3] = fileStat.st_mode & S_IXUSR ? 'x' : '-';
+    permissions[4] = fileStat.st_mode & S_IRGRP ? 'r' : '-';
+    permissions[5] = fileStat.st_mode & S_IWGRP ? 'w' : '-';
+    permissions[6] = fileStat.st_mode & S_IXGRP ? 'x' : '-';
+    permissions[7] = fileStat.st_mode & S_IROTH ? 'r' : '-';
+    permissions[8] = fileStat.st_mode & S_IWOTH ? 'w' : '-';
+    permissions[9] = fileStat.st_mode & S_IXOTH ? 'x' : '-';
+
+    return permissions;
+}
+
+void handleFiles(char* file)
+{
+    int isFile = 0;
+
+    initMyDir(".");
+
+    for(int i = 0; i < fileCount; i++)
+    {
+        if(!strcmp(file, fileNames[i]))
+        {
+            isFile = 1;
+            break;
+        }
+    }
+    
+    if(isFile)
+    {
+        struct stat fileStat;
+        stat(file, &fileStat);
+
+        if((fileStat.st_mode & S_IXUSR) || (fileStat.st_mode & S_IXGRP) || (fileStat.st_mode & S_IXOTH))
+        {
+            printf("\033[1;31m");
+            printf("%s\n", file);
+            printf("\033[0m");
+            return;
+        }
+        printf("%s\n", file);
+        return;
+    }
+
+    char errorString[100];
+    sprintf(errorString, "ls: %s", file);
+    perror(errorString);
 }
