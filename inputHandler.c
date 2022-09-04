@@ -79,7 +79,7 @@ void handleInput()
         }
         else
         {
-            cmdNotFound();
+            testSystemCommand();
         }
     }
 }

@@ -17,6 +17,7 @@
 #include <tcl.h>
 #include <dirent.h>
 #include <fcntl.h>
+
 #include "prompt.h"
 #include "echo.h"
 #include "variables.h"
@@ -25,5 +26,6 @@
 #include "pwd.h"
 #include "cd.h"
 #include "ls.h"
+#include "syscmd.h"
 
 #endif
