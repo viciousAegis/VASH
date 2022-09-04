@@ -1,7 +1,14 @@
 #include "headers.h"
 
+/*
+TODO
+do time of process
+background process
+*/
+
 void testSystemCommand()
 {
+
     // concatenate all arguments with command word
     input* allArgs = (input*) calloc(1024, sizeof(input));
     allArgs[0] = (input) calloc(1024, sizeof(char));
@@ -16,21 +23,25 @@ void testSystemCommand()
     //fork a child process
     pid_t pid = fork();;
 
+    int flag;
+
     if(pid < 0)
     {
         // fork failed
         perror("");
         return;
     }
-    else if(pid == 0)
+    
+    if(pid == 0)
     {
         // child process
-
         //execute command and check for errors
-        int flag = execvp(allArgs[0], allArgs);
+        flag = execvp(allArgs[0], allArgs);
         if(flag < 0)
         {
-            write(2, "%s: command not found\n", allArgs[0]);
+            write(2,"command not found\n",20);
+            // kill the child process if unsuccessful execution
+            kill(getpid(), SIGKILL);
         }
     }
 
@@ -39,6 +50,5 @@ void testSystemCommand()
         // parent process
         // wait for child to finish
         waitpid(pid, NULL, 0);
-        printf("parent\n");
     }
 }

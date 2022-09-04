@@ -52,6 +52,8 @@ void handleInput()
     {
         parseInput(commands[i]);
 
+        addToHistory(commands[i]);
+
         if(checkExit())
         {
             performExit();
@@ -76,6 +78,10 @@ void handleInput()
         else if(checkLS())
         {
             performLS();
+        }
+        else if(checkHistory())
+        {
+            printHistory();
         }
         else
         {
@@ -132,6 +138,15 @@ int checkClear()
 int checkLS()
 {
     if(!strcmp(commandWord,"ls"))
+    {
+        return 1;
+    }
+    return 0;
+}
+
+int checkHistory()
+{
+    if(!strcmp(commandWord,"history") || !strcmp(commandWord,"h"))
     {
         return 1;
     }

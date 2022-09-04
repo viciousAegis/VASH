@@ -1,0 +1,11 @@
+exit
+ls
+c
+ls
+h
+c
+h
+make
+q
+cd
+ls
