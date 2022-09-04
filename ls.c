@@ -247,9 +247,20 @@ void printAllDir()
 
 void printDirWithInfo(path dirPath, int isAll)
 {
-    struct stat fileStat;
-    stat(dirPath, &fileStat);
-    int blockSize = fileStat.st_blocks;
+    int blockSize = 0;
+    for(int i = 0; i < fileCount; i++)
+    {
+        if(!isAll)
+        {
+            if(fileNames[i][0] == '.')
+                continue;
+        }
+        struct stat fileStat;
+        path filePath = (path) calloc(1024, sizeof(char));
+        sprintf(filePath, "%s/%s", dirPath, fileNames[i]);
+        stat(filePath, &fileStat);
+        blockSize += fileStat.st_blocks;
+    }
 
     printf("total %d\n", blockSize);
 
@@ -271,7 +282,8 @@ void printDirWithInfo(path dirPath, int isAll)
         char* date = (char*) calloc(30, sizeof(char));
         
         permissions = getFilePermissions(absPath);
-
+        
+        struct stat fileStat;
         stat(absPath, &fileStat);
         
         hardLinks = fileStat.st_nlink;
