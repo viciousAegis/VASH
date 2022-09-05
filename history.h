@@ -9,13 +9,15 @@ int historyCmdCount;
 
 char cmdHistoryArray[MAX_COUNT][MAX_LENGTH];
 
-void addToHistory(char*);
+void addToHistory();
 
 void printHistory();
 
 void loadHistory();
 
 void writeToHistoryFile();
+
+char* constructCommand();
 
 int checkIfExists(char*);
 

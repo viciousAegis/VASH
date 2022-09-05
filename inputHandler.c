@@ -52,7 +52,7 @@ void handleInput()
     {
         parseInput(commands[i]);
 
-        addToHistory(commands[i]);
+        addToHistory();
 
         if(checkExit())
         {

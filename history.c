@@ -5,18 +5,23 @@ int min(int a, int b)
     return a < b ? a : b;
 }
 
-void addToHistory(cmdWord cmd)
+void addToHistory()
 {
     historyCmdCount = min(historyCmdCount, MAX_COUNT-1);
+
+
+    char* cmd = (char*) calloc(256, sizeof(char));
+    cmd = constructCommand();
 
     int flag = checkIfExists(cmd);
     if(flag) return;
 
-    for(int i = historyCmdCount; i > -1; i--)
+    for(int i = historyCmdCount-1; i > -1; i--)
     {
         strcpy(cmdHistoryArray[i+1], cmdHistoryArray[i]);
     }
     strcpy(cmdHistoryArray[0], cmd);
+    printf("%d\n", historyCmdCount);
 
     if(historyCmdCount < MAX_COUNT)
         historyCmdCount++;
@@ -76,4 +81,19 @@ void writeToHistoryFile()
     }
 
     fclose(fp);
+}
+
+char* constructCommand()
+{
+    char* cmd = (char*) calloc(256, sizeof(char));
+    strcpy(cmd, commandWord);
+
+    for(int i = 0; i < argCount; i++)
+    {
+        strcat(cmd, " ");
+        strcat(cmd, arguments[i]);
+    }
+
+    cmd = removeTrailingEscape(cmd);
+    return cmd;
 }

@@ -1,11 +1,20 @@
-exit
-ls
-c
-ls
-h
-c
-h
-make
 q
+make
 cd
+ls
+cd
+pwd
+cd
+ls
+ed
+echo q
+echo this
+echo
+pwd
+ls
+cd ~
+cd .
+pwd
+cd
+pwd
 ls
