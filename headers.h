@@ -28,5 +28,6 @@
 #include "ls.h"
 #include "syscmd.h"
 #include "history.h"
+#include "discover.h"
 
 #endif

@@ -83,6 +83,10 @@ void handleInput()
         {
             printHistory();
         }
+        else if(checkDiscover())
+        {
+            performDiscover();
+        }
         else
         {
             testSystemCommand();
@@ -147,6 +151,15 @@ int checkLS()
 int checkHistory()
 {
     if(!strcmp(commandWord,"history") || !strcmp(commandWord,"h"))
+    {
+        return 1;
+    }
+    return 0;
+}
+
+int checkDiscover()
+{
+    if(!strcmp(commandWord,"discover") || !strcmp(commandWord,"d"))
     {
         return 1;
     }

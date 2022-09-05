@@ -24,6 +24,8 @@ int checkClear();
 
 int checkHistory();
 
+int checkDiscover();
+
 char* removeTrailingEscape(path);
 
 char* removeLeadingTilde(path);

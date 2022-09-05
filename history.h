@@ -1,7 +1,7 @@
 #ifndef __HISTORY_H
 #define __HISTORY_H
 
-#define MAX_LENGTH 100
+#define MAX_LENGTH 1024
 #define MAX_COUNT 20
 #define MAX_DISPLAY_COUNT 10
 

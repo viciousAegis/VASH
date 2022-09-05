@@ -10,7 +10,7 @@ void addToHistory()
     historyCmdCount = min(historyCmdCount, MAX_COUNT-1);
 
 
-    char* cmd = (char*) calloc(256, sizeof(char));
+    char* cmd = (char*) calloc(1024, sizeof(char));
     cmd = constructCommand();
 
     int flag = checkIfExists(cmd);
@@ -21,7 +21,6 @@ void addToHistory()
         strcpy(cmdHistoryArray[i+1], cmdHistoryArray[i]);
     }
     strcpy(cmdHistoryArray[0], cmd);
-    printf("%d\n", historyCmdCount);
 
     if(historyCmdCount < MAX_COUNT)
         historyCmdCount++;
