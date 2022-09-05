@@ -21,6 +21,7 @@ void testSystemCommand()
     allArgs[argCount+1] = NULL;
 
     //fork a child process
+    time_t startTime = time(NULL);
     pid_t pid = fork();;
 
     int flag;
@@ -50,5 +51,7 @@ void testSystemCommand()
         // parent process
         // wait for child to finish
         waitpid(pid, NULL, 0);
+        time_t endTime = time(NULL);
+        timeElapsedSinceChildStart = endTime - startTime;
     }
 }

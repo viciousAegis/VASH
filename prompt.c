@@ -10,6 +10,8 @@ void initialPrompt()
         write(1, buf, buflen);
     }
     close(fd);
+
+    timeElapsedSinceChildStart = 0;
 }
 
 void prompt(path directory) {
@@ -28,7 +30,15 @@ void prompt(path directory) {
     printf("\033[0;36m");
     printf("%s", directory);
 
+    if(timeElapsedSinceChildStart > 0)
+    {
+        printf("\033[1;33m");
+        printf("took %ds", timeElapsedSinceChildStart);
+    }
+
     printf("\033[1;32m");
     printf(">$");
     printf("\033[0m");
+
+    timeElapsedSinceChildStart = 0;
 }

@@ -1,3 +1,15 @@
+sleep 0.7
+sleep 0.4
+sleep 1
+sleep 2
+q
+h
+d /Users/akshitsinha3/Library/CloudStorage/OneDrive-InternationalInstituteofInformationTechnology/Sem_2_1/OSN/Assignment2/VASH
+h
+c
+cd
+d
+d ./VASH
 cd ..
 d ~ -d
 d -d
@@ -6,15 +18,3 @@ d ~/..
 d -f ~
 d ~
 q
-d -f /Users/akshitsinha3/Library/CloudStorage/OneDrive-InternationalInstituteofInformationTechnology/Sem_2_1/OSN/Assignment2/VASH
-d /Users/akshitsinha3/Library/CloudStorage/OneDrive-InternationalInstituteofInformationTechnology/Sem_2_1/OSN/Assignment2/VASH
-cd /Users/akshitsinha3/Library/CloudStorage/OneDrive-InternationalInstituteofInformationTechnology/Sem_2_1/OSN/Assignment2/VASH
-cd /Users/akshitsinha3/Library/CloudStorage/OneDrive-InternationalInstituteofInformationTechnology/
-d -f
-d
-d /Users
-d ~ -d
-d ~
-q
-d ~
-cd ..
