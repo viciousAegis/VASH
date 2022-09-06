@@ -32,5 +32,6 @@
 #include "history.h"
 #include "discover.h"
 #include "dll.h"
+#include "pinfo.h"
 
 #endif

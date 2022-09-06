@@ -16,7 +16,7 @@ void performCD()
 {
     if(argCount > 1)
     {
-        printf("cd: too many arguments\n");
+        printErrorMsg("cd: too many arguments\n");
         return;
     }
     

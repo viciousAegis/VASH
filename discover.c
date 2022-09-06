@@ -1,11 +1,5 @@
 #include "headers.h"
 
-
-/*
-TODO:
-implement absolute directory
-*/
-
 path targetDir;
 fileName targetFile;
 path foundPath;
@@ -109,7 +103,7 @@ int findFileInDir(path directory)
     DIR* dir = opendir(directory);
     if(dir == NULL)
     {
-        write(2, "Error: directory not found\n", 27);
+        printErrorMsg("Error: directory not found\n");
         return 0;
     }
 
@@ -159,7 +153,7 @@ void displayAllFilesInDir(path directory)
     DIR* dir = opendir(directory);
     if(dir == NULL)
     {
-        write(2, "Error: directory not found\n", 27);
+        printErrorMsg("Error: directory not found\n");
         return;
     }
 
@@ -188,7 +182,7 @@ void displayFilesInDir(path directory)
     DIR* dir = opendir(directory);
     if(dir == NULL)
     {
-        write(2, "Error: directory not found\n", 27);
+        printErrorMsg("Error: directory not found\n");
         return;
     }
 
@@ -220,7 +214,7 @@ void displayDirsInDir(path directory)
     DIR* dir = opendir(directory);
     if(dir == NULL)
     {
-        write(2, "Error: directory not found\n", 27);
+        printErrorMsg("Error: directory not found\n");
         return;
     }
 

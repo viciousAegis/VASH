@@ -30,7 +30,7 @@ int dirCount = 0;
 void parseFlagsAndDirsInInput()
 {
     dirCount = 0;
-    flags = (char*) calloc(2, sizeof(char));
+    flags = (char*) calloc(32, sizeof(char));
     directories = (path*) calloc(1024, sizeof(path));
     for(int i = 0; i < argCount; i++)
     {
@@ -62,8 +62,18 @@ void performLS()
     {
         // ls -flags
         initMyDir(".");
+
         if(strlen(flags) > 0)
         {
+            for(int i = 0; i < strlen(flags); i++)
+            {
+                if(flags[i] != 'a' && flags[i] != 'l')
+                {
+                    printErrorMsg("ls: invalid flags\n");
+                    return;
+                }
+            }
+
             if(!strcmp(flags, "a"))
             {
                 printAllDir();
@@ -76,10 +86,6 @@ void performLS()
             {
                 printDirWithInfo(".", 1);
             }
-            else
-            {
-                printf("Invalid flags\n");
-            }
         }
         else // ls
         {
@@ -91,6 +97,15 @@ void performLS()
         // ls <dir> <dir> <dir>
         for(int i = 0; i < dirCount; i++)
         {
+            for(int i = 0; i < strlen(flags); i++)
+            {
+                if(flags[i] != 'a' && flags[i] != 'l')
+                {
+                    printErrorMsg("ls: invalid flags\n");
+                    return;
+                }
+            }
+            
             int flag = initMyDir(directories[i]);
             if(flag == -1)
             {
@@ -116,10 +131,6 @@ void performLS()
                 {
                     printDirWithInfo(directories[i], 1);
                 }
-                else
-                {
-                    printf("Invalid flags\n");
-                }
             }
             else // ls
             {
@@ -139,7 +150,7 @@ int compare(const void* a, const void* b)
 
 void initFileNames()
 {
-    fileNames = (fileName*) calloc(100, sizeof(fileName));
+    fileNames = (fileName*) calloc(1024, sizeof(fileName));
     for(int i = 0; i < 100; i++)
     {
         fileNames[i] = (fileName) calloc(1024, sizeof(char));

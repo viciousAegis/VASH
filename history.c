@@ -51,7 +51,7 @@ void loadHistory()
     FILE* fp = fopen("cmd_history.txt", "r");
     if(!fp)
     {
-        printf("No history file found\n");
+        printErrorMsg("No history file found\n");
         return;
     }
 
@@ -70,7 +70,7 @@ void writeToHistoryFile()
     FILE* fp = fopen("cmd_history.txt", "w");
     if(!fp)
     {
-        printf("Error opening history file\n");
+        printErrorMsg("Error opening history file\n");
         return;
     }
 

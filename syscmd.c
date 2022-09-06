@@ -118,7 +118,7 @@ void execForegroundProcess()
         flag = execvp(foreArgsArr[0], foreArgsArr);
         if(flag < 0)
         {
-            write(2,"command not found\n",19);
+            printErrorMsg("command not found\n");
             // kill the child process if unsuccessful execution
             kill(getpid(), SIGKILL);
         }
@@ -156,7 +156,7 @@ void execBackgroundProcess()
         flag = execvp(backArgsArr[0], backArgsArr);
         if(flag < 0)
         {
-            write(2,"command not found\n",20);
+            printErrorMsg("command not found\n");
             // kill the child process if unsuccessful execution
             kill(getpid(), SIGKILL);
         }
@@ -194,10 +194,15 @@ void waitForBackgroundChild()
             
                 char* outMsg = (char*) calloc(1024, sizeof(char));
                 if(!wstat.w_status)
-                    sprintf(outMsg,"\n%s with pid: %d exited normally\n",backArgsArr[0], pid); 
+                {
+                    sprintf(outMsg,"\n%s with pid: %d exited normally\n",backArgsArr[0], pid);
+                    write(1, outMsg, strlen(outMsg));
+                }
                 else
+                {
                     sprintf(outMsg,"\n%s with pid: %d exited abnormally\n",backArgsArr[0], pid);
-                write(2, outMsg, strlen(outMsg));
+                    printErrorMsg(outMsg);
+                }
                 prompt(currDirectory);
                 fflush(stdout);
             }

@@ -10,4 +10,6 @@ path checkDirectory();
 
 void performExit();
 
+void printErrorMsg(char*);
+
 #endif

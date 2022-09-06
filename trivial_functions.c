@@ -34,6 +34,13 @@ path checkDirectory()
     return newDirectory;
 }
 
+void printErrorMsg(char* errorMsg)
+{
+    char* error = (char*) calloc(1024, sizeof(char));
+    sprintf(error, "\033[1;31m%s\033[0m", errorMsg);
+    write(2,error, strlen(error));
+}
+
 void performExit()
 {
         clearDisplay();
