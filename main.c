@@ -11,6 +11,9 @@ int main()
 
     loadHistory();
 
+    //background PIDs List
+    backgroundPIDs = LL_init();
+
     rootPath = (path) calloc(1024, sizeof(char));
     getcwd(rootPath, 1024);
 
@@ -20,15 +23,24 @@ int main()
     //initialse previous directory as the root directory
     prevDirectory = rootPath;
 
+    childCaught = 0;
+
     while (1)
     {
+        //check for background child process and wait for it to finish
+        signal(SIGCHLD, waitForBackgroundChild);
+        
         //check which directory user is in and prompt user
         currDirectory = checkDirectory();
         prompt(currDirectory);
 
-        bufferInput = (input) calloc(1024, sizeof(char));
-        fgets(bufferInput, 1024, stdin);
 
-        handleInput();
+        bufferInput = (input) calloc(1024, sizeof(char));
+        if (fgets(bufferInput, 1024, stdin) != NULL){
+            handleInput();
+        } else {
+            break;
+        }
+
     }
 }

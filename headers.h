@@ -17,6 +17,8 @@
 #include <fcntl.h>
 #include <signal.h>
 #include <sys/times.h>
+#include <sys/wait.h>
+#include <sys/resource.h>
 
 #include "prompt.h"
 #include "echo.h"
@@ -29,5 +31,6 @@
 #include "syscmd.h"
 #include "history.h"
 #include "discover.h"
+#include "dll.h"
 
 #endif

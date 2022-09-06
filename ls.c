@@ -330,7 +330,34 @@ char* getFilePermissions(path filePath)
 
     stat(filePath, &fileStat);
 
-    permissions[0] = S_ISDIR(fileStat.st_mode) ? 'd' : '-';
+    if(S_ISDIR(fileStat.st_mode))
+    {
+        permissions[0] = 'd';
+    }
+    else if(S_ISBLK(fileStat.st_mode))
+    {
+        permissions[0] = 'b';
+    }
+    else if(S_ISCHR(fileStat.st_mode))
+    {
+        permissions[0] = 'c';
+    }
+    else if(S_ISFIFO(fileStat.st_mode))
+    {
+        permissions[0] = 'p';
+    }
+    else if(S_ISLNK(fileStat.st_mode))
+    {
+        permissions[0] = 'l';
+    }
+    else if(S_ISSOCK(fileStat.st_mode))
+    {
+        permissions[0] = 's';
+    }
+    else
+    {
+        permissions[0] = '-';
+    }
     permissions[1] = fileStat.st_mode & S_IRUSR ? 'r' : '-';
     permissions[2] = fileStat.st_mode & S_IWUSR ? 'w' : '-';
     permissions[3] = fileStat.st_mode & S_IXUSR ? 'x' : '-';
