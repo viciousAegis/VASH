@@ -81,11 +81,31 @@ void performDiscover()
     }
 
     int flag = findFileInDir(targetDir);
-    if(flag) printf("%s\n", foundPath);
+    if(!flag) printf("Not found\n");
 }
 
 int findFileInDir(path directory)
 {
+    int searchDirs, searchFiles;
+
+    if(!strlen(discFlags) || strlen(discFlags) == 2)
+    {
+        searchDirs = 1;
+        searchFiles = 1;
+    }
+    else if(discFlags[0] == 'f')
+    {
+        searchDirs = 0;
+        searchFiles = 1;
+    }
+    else if(discFlags[0] == 'd')
+    {
+        searchDirs = 1;
+        searchFiles = 0;
+    }
+
+    int flag = 0;
+
     DIR* dir = opendir(directory);
     if(dir == NULL)
     {
@@ -103,19 +123,31 @@ int findFileInDir(path directory)
 
         if(file->d_type == DT_DIR)
         {
+            if(searchDirs && !strcmp(targetFile, file->d_name))
+            {
+                sprintf(foundPath, "%s/%s", directory, file->d_name);
+                printf("%s\n", foundPath);
+                flag = 1;
+            }
             path newDir = (path) calloc(1024, sizeof(char));
             sprintf(newDir, "%s/%s", directory, file->d_name);
-            int flag = findFileInDir(newDir);
-            if(flag) return 1;
+            if(flag == 1)
+            {
+                findFileInDir(newDir);
+            }
+            else
+            {
+                flag = findFileInDir(newDir);
+            }
         }
-        else if(!strcmp(targetFile, file->d_name))
+        else if(searchFiles && !strcmp(targetFile, file->d_name))
         {
             sprintf(foundPath, "%s/%s", directory, file->d_name);
-            return 1;
+            printf("%s\n", foundPath);
+            flag = 1;
         }
     }
-
-    return 0;
+    return flag;
 }
 
 void displayAllFilesInDir(path directory)

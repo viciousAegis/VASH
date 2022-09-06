@@ -1,20 +1,20 @@
+cd ..
+d -d
+cd ..
+ls
+cd ../..
+cd
+d "a.out"
+d
+cd ..
+d
+cd ..
+d "a.out"
+f "a.out"
+cd ..
+d "vash"
+d "vash"a
 q
-sleep 2& sleep 2
-sleep 1&
-sleep 4&
-sleep 10&
-sleep 2&
-sleep 2
-q
-sleep 2
-sleep 1
-sleep 2
-sleep 2&
-sleep 2 &
-q
-sleep 2& sleep 2&
-sleep 2& sleep 2
-q
-sleep 2 & sleep 2
-sleep 2& sleep 2
-sleep 2&
+d "vash"
+cd
+cd ..
