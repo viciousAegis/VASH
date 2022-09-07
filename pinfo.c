@@ -23,7 +23,7 @@ void performPinfo()
     FILE* file = fopen(procFilePath, "r");
     if(file == NULL)
     {
-        printErrorMsg("Error: No such process\n");
+        printErrorMsg("Error: No such file\n");
         return;
     }
     
@@ -55,7 +55,7 @@ void performPinfo()
     FILE* file2 = fopen(procFilePath, "r");
     if(file2 == NULL)
     {
-        printErrorMsg("Error: No such process\n");
+        printErrorMsg("Error: No such file\n");
         return;
     }
 

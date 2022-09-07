@@ -1,3 +1,6 @@
+pinfo
+q
+pinfo
 q
 sleep 1
 sleep 1&
@@ -15,6 +18,3 @@ esgd
 eep 3
 sleep 2& sleep 3
 sleep 3
-sleep 2
-eep 3&
-s
