@@ -4,7 +4,7 @@
 int getCommands();
 
 // parse input to get command word and arguments
-void parseInput();
+int parseInput();
 
 void handleInput();
 

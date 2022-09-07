@@ -20,11 +20,14 @@ int getCommands()
     return 1;
 }
 
-void parseInput(input command)
+int parseInput(input command)
 {
     command = removeTrailingEscape(command);
-    
     commandWord = strtok(command, " \t");
+    if((int) commandWord == 0)
+    {
+        return -1;
+    }
 
     arguments = (input*) calloc(1024, sizeof(input));
     argCount = 0;
@@ -39,6 +42,8 @@ void parseInput(input command)
         arguments[argCount] = (input) calloc(1, sizeof(char));
         strcpy(arguments[argCount], "");
     }
+
+    return 0;
 }
 
 void handleInput()
@@ -50,7 +55,11 @@ void handleInput()
 
     for(int i = 0; i < cmdCount; i++)
     {
-        parseInput(commands[i]);
+        int inputFlag = parseInput(commands[i]);
+        if(inputFlag == -1)
+        {
+            continue;
+        }
 
         addToHistory();
 
@@ -169,6 +178,7 @@ int checkDiscover()
 char* removeTrailingEscape(char* path)
 {
     int len = strlen(path);
+
     if(path[len - 1] == '\n')
     {
         path[len - 1] = '\0';

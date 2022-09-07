@@ -5,6 +5,8 @@ int isBackgroundProcess;
 
 int childCaught;
 
+time_t startTime;
+
 void parseSystemInput();
 
 void checkIfBackgroundProcess();

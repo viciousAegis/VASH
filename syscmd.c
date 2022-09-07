@@ -98,8 +98,8 @@ void testSystemCommand()
 
 void execForegroundProcess()
 {
+    startTime = time(NULL);
     //fork a child process
-    time_t startTime = time(NULL);
     pid_t pid = fork();;
 
     int flag;
@@ -120,7 +120,7 @@ void execForegroundProcess()
         {
             printErrorMsg("command not found\n");
             // kill the child process if unsuccessful execution
-            kill(getpid(), SIGKILL);
+            exit(1);
         }
     }
 
@@ -153,12 +153,13 @@ void execBackgroundProcess()
     {
         // child process
         //execute command and check for errors
+        setpgid(0, 0);
         flag = execvp(backArgsArr[0], backArgsArr);
         if(flag < 0)
         {
-            printErrorMsg("command not found\n");
+            printErrorMsg("\ncommand not found\n");
             // kill the child process if unsuccessful execution
-            kill(getpid(), SIGKILL);
+            exit(1);
         }
     }
 
@@ -173,17 +174,11 @@ void execBackgroundProcess()
 
 void waitForBackgroundChild()
 {
-    union wait wstat;
-    pid_t	pid;
+    int wstat;
+    pid_t pid;
 
-    while (1) {
-        pid = wait3 (&wstat, WNOHANG, (struct rusage *)NULL );
-        if (pid == 0)
-            return;
-        else if (pid == -1)
-            return;
-        else
-        {
+    while((pid = waitpid(-1,&wstat,WNOHANG)) > 0)
+    {
             if(LL_empty(backgroundPIDs))
             {
                 return;
@@ -193,7 +188,7 @@ void waitForBackgroundChild()
                 LL_delete(backgroundPIDs, pid);
             
                 char* outMsg = (char*) calloc(1024, sizeof(char));
-                if(!wstat.w_status)
+                if(WIFEXITED(wstat) == 1)
                 {
                     sprintf(outMsg,"\n%s with pid: %d exited normally\n",backArgsArr[0], pid);
                     write(1, outMsg, strlen(outMsg));
@@ -202,11 +197,10 @@ void waitForBackgroundChild()
                 {
                     sprintf(outMsg,"\n%s with pid: %d exited abnormally\n",backArgsArr[0], pid);
                     printErrorMsg(outMsg);
+                    perror(errno);
                 }
                 prompt(currDirectory);
                 fflush(stdout);
             }
-        }
     }
-    
 }

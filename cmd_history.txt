@@ -1,20 +1,20 @@
+sleep 1
+sleep 1&
 q
-sleep 5& sleep 4
-sleep 2
+eel 2&
+q
+./[C
+make
+eel 2&
+q
+make
+eel 3&
+eep 3&
+esgd
+eep 3
+sleep 2& sleep 3
 sleep 3
-sleep 5 &
 sleep 2
-&
-neofetch
-ls -l
-ls
-discover
-h
-ls /dev
-q
-ls /Users
-ls /
-ls /dev
-ls -l /dev
-ls -l /Users/akshitsinha3/dev
-ls
+eep 3&
+s
+sleep 2

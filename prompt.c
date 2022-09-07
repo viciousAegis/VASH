@@ -37,7 +37,7 @@ void prompt(path directory) {
     }
 
     printf("\033[1;32m");
-    printf(">$");
+    printf(">$ ");
     printf("\033[0m");
 
     timeElapsedSinceChildStart = 0;

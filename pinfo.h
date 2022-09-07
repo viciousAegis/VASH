@@ -3,4 +3,6 @@
 
 void performPinfo();
 
+void printPinfo();
+
 #endif

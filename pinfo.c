@@ -16,9 +16,7 @@ void performPinfo()
     {
         pid = atoi(arguments[1]);
     }
-
-    /*2,4,7,22 */
-
+    
     path procFilePath = (path) calloc(1024, sizeof(char));
     sprintf(procFilePath, "/proc/%d/stat", pid);
     
