@@ -1,2 +1,2 @@
 main:
-	gcc -g *.c -o vash
+	gcc -g *.c -o vash -fcommon

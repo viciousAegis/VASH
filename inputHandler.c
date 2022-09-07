@@ -96,6 +96,10 @@ void handleInput()
         {
             performDiscover();
         }
+        else if(!strcmp(commandWord,"pinfo"))
+        {
+            performPinfo();
+        }
         else
         {
             testSystemCommand();

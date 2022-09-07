@@ -2,7 +2,7 @@
 
 int pid;
 char* status;
-int memory;
+unsigned long memory;
 char* exePath;
 int isBackground;
 
@@ -16,7 +16,7 @@ void performPinfo()
     {
         pid = atoi(arguments[1]);
     }
-    
+
     path procFilePath = (path) calloc(1024, sizeof(char));
     sprintf(procFilePath, "/proc/%d/stat", pid);
     
@@ -40,7 +40,7 @@ void performPinfo()
 
     char* status = (char*) calloc(1024, sizeof(char));
     status = statContents[2];
-    memory = atoi(statContents[22]);
+    memory = atol(statContents[22]);
 
     isBackground = atoi(statContents[4]) - atoi(statContents[7]);
 
@@ -72,6 +72,6 @@ void printPinfo()
 {
     printf("pid : %d\n", pid);
     printf("Process Status : %s\n", status);
-    printf("Memory : %d\n", memory);
+    printf("Memory : %lu\n", memory);
     printf("Executable Path : %s\n", exePath);
 }
