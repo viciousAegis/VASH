@@ -4,6 +4,8 @@ int pid;
 char* status;
 unsigned long memory;
 char* exePath;
+int pgid;
+int pgrid;
 int isBackground;
 
 void performPinfo()
@@ -14,12 +16,12 @@ void performPinfo()
     }
     else
     {
-        pid = atoi(arguments[1]);
+        pid = atoi(arguments[0]);
     }
 
     path procFilePath = (path) calloc(1024, sizeof(char));
     sprintf(procFilePath, "/proc/%d/stat", pid);
-    
+
     FILE* file = fopen(procFilePath, "r");
     if(file == NULL)
     {
@@ -27,22 +29,32 @@ void performPinfo()
         return;
     }
     
-    char** statContents = (char**) calloc(1024, sizeof(char*));
-    statContents[0] = (char*) calloc(1024, sizeof(char));
-    while(fscanf(file, "%s", statContents[0]) != EOF)
+    char* statContents = (char*) calloc(1024, sizeof(char));
+    char* actualStatContents = (char*) calloc(1024, sizeof(char));
+
+    fgets(statContents,1024,file);
+
+    strtok(statContents,")");
+    actualStatContents = strtok(NULL, ")");
+
+    int statCount = 0;
+
+    status = (char*) calloc(32, sizeof(char));
+
+    for(char* out = strtok(actualStatContents, " "); out; out = strtok(NULL, " "))
     {
-        for(int i = 1; i < 1024; i++)
-        {
-            statContents[i] = (char*) calloc(1024, sizeof(char));
-            fscanf(file, "%s", statContents[i]);
-        }
+        if(statCount == 0)
+            status = out;
+        else if(statCount == 2)
+            pgid = atoi(out);
+        else if(statCount == 5)
+            pgrid = atoi(out);
+        else if(statCount == 20)
+            memory = atol(out);
+        statCount++;
     }
 
-    char* status = (char*) calloc(1024, sizeof(char));
-    status = statContents[2];
-    memory = atol(statContents[22]);
-
-    isBackground = atoi(statContents[4]) - atoi(statContents[7]);
+    isBackground = pgrid - pgid;
 
     if(isBackground == 0)
     {

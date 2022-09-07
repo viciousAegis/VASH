@@ -39,7 +39,7 @@ int main()
         if (fgets(bufferInput, 1024, stdin) != NULL){
             handleInput();
         } else {
-            break;
+            exit(0);
         }
 
     }

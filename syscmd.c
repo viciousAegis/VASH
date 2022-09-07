@@ -10,7 +10,7 @@ input* foreArgsArr;
 int backArgsCount;
 int foreArgsCount;
 
-isBackgroundProcess = 0;
+int isBackgroundProcess = 0;
 
 void parseSystemInput()
 {

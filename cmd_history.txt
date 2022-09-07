@@ -1,20 +1,20 @@
+cd -
+cd ~
+cd ..
+clear
+cute
+lssd
+ls -l
+ls -a
+ls
+q
+sleep 3
+pinfo
+pinof
+sleep 1&
+q
 pinfo
 q
 pinfo
 q
 sleep 1
-sleep 1&
-q
-eel 2&
-q
-./[C
-make
-eel 2&
-q
-make
-eel 3&
-eep 3&
-esgd
-eep 3
-sleep 2& sleep 3
-sleep 3
