@@ -1,0 +1,20 @@
+cd
+cd < out.txt
+echo < out.txt
+q
+make
+cd < out.txt
+q
+[A
+echo < out.txt
+\
+[A[A
+echo < out.txt
+echo out.txt
+echo < out.txt
+echo < t
+echo < out.txt
+q
+echo < out.txt
+echo < this
+q

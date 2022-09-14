@@ -145,7 +145,7 @@ void execForegroundProcess()
         foregroundPID = pid;
         // parent process
         // wait for child to finish
-        waitpid(pid, NULL, 0);
+        waitpid(pid, NULL, WUNTRACED);
         time_t endTime = time(NULL);
         timeElapsedSinceChildStart = endTime - startTime;
     }

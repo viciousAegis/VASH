@@ -1,20 +1,20 @@
+ls
+sleep 5
+z
+sleep 5
+sleep 6
+sleep 5
 q
-sort
-sort headers.h
-sort a b c
-man sort
-sort
-cat
-cat main.c
-cat out.txt
+sleep 5
+sleep 4
+sleep 20
+sleep 30
+sleep 4
+sleep 5
+sleep 70
+sleep 6
+sleep 5
 q
-cat
-cat out.txt
-sleep 1
-sleep1
-q
-sort
-q
-[A
-sort out.txt
-sort
+sleep 5
+sleep 4
+sleep 5
