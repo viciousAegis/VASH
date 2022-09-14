@@ -2,7 +2,6 @@
 
 int main()
 {
-
     clearDisplay();
 
     // load the history file
@@ -27,9 +26,12 @@ int main()
 
     while (1)
     {
-        //check for background child process and wait for it to finish
-        signal(SIGCHLD, waitForBackgroundChild);
+        //check for signals
+        catchSignals();
         
+        //reset the redirections
+        resetRedirection();
+
         //check which directory user is in and prompt user
         currDirectory = checkDirectory();
         prompt(currDirectory);
@@ -41,6 +43,5 @@ int main()
         } else {
             exit(0);
         }
-
     }
 }

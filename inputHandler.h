@@ -30,4 +30,26 @@ char* removeTrailingEscape(path);
 
 char* removeLeadingTilde(path);
 
+void resetRedirection();
+
+int handleRedirection();
+
+void takeInputFromFile();
+
+void redirectOutputToFile();
+
+char* inputFile;
+char* outputFile;
+
+FILE* inputFD;
+FILE* outputFD;
+
+input* redirections;
+
+int isInputRedirected;
+int isOutputRedirected;
+int isOutputAppended;
+
+int originalSTDOUT;
+
 #endif

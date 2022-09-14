@@ -16,9 +16,24 @@ void parseSystemInput()
 {
     allArgs = (input) calloc(1024, sizeof(char));
     sprintf(allArgs,"%s", commandWord);
-    for(int i = 0; i < argCount; i++)
+    if(isInputRedirected)
     {
-        sprintf(allArgs, "%s %s", allArgs, arguments[i]);
+        sprintf(allArgs, "%s %s %s", allArgs, redirections[0], redirections[1]);
+    }
+    if(isOutputRedirected)
+    {
+        sprintf(allArgs, "%s %s %s", allArgs, redirections[0], redirections[1]);
+    }
+    else if(isOutputAppended)
+    {
+        sprintf(allArgs, "%s %s %s", allArgs, redirections[0], redirections[1]);
+    }
+    else
+    {
+        for(int i = 0; i < argCount; i++)
+        {
+            sprintf(allArgs, "%s %s", allArgs, arguments[i]);
+        }
     }
     checkIfBackgroundProcess();
 
@@ -75,6 +90,7 @@ void checkIfBackgroundProcess()
 
 void testSystemCommand()
 {
+    foregroundPID = 0;
     isBackgroundProcess = 0;
     backArgsCount = 0;
     foreArgsCount = 0;
@@ -126,6 +142,7 @@ void execForegroundProcess()
 
     if(pid > 0)
     {
+        foregroundPID = pid;
         // parent process
         // wait for child to finish
         waitpid(pid, NULL, 0);

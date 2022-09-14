@@ -33,5 +33,6 @@
 #include "discover.h"
 #include "dll.h"
 #include "pinfo.h"
+#include "signalHandler.h"
 
 #endif

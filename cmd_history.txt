@@ -1,20 +1,20 @@
-cd -
-cd ~
-cd ..
-clear
-cute
-lssd
-ls -l
-ls -a
-ls
 q
-sleep 3
-pinfo
-pinof
-sleep 1&
+sort
+sort headers.h
+sort a b c
+man sort
+sort
+cat
+cat main.c
+cat out.txt
 q
-pinfo
-q
-pinfo
-q
+cat
+cat out.txt
 sleep 1
+sleep1
+q
+sort
+q
+[A
+sort out.txt
+sort

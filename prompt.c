@@ -15,7 +15,14 @@ void initialPrompt()
 }
 
 void prompt(path directory) {
-    //name of shell
+
+    // never write prompt to file
+    if(isOutputRedirected || isOutputAppended)
+    {
+        close(outputFile);
+        open(1 , O_WRONLY);
+    }
+
     printf("\033[0;35m");
     printf("%s ", vash);
 
