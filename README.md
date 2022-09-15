@@ -58,5 +58,8 @@ Contains code to display information regarding required process.
 ### **history.c**
 Contains code that handles history of commands entered. These commands are stored in `cmd_history.txt` to make history work between multiple sessions.
 
+### **signalHandler.c** 
+Contains code to handle ctrl-c and ctrl-z signals and communicate with child processes.
+
 ### **headers.h**
 Contains all the required headers for all files
