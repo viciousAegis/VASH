@@ -38,6 +38,8 @@ void takeInputFromFile();
 
 void redirectOutputToFile();
 
+void clearArguments();
+
 char* inputFile;
 char* outputFile;
 
@@ -51,5 +53,6 @@ int isOutputRedirected;
 int isOutputAppended;
 
 int originalSTDOUT;
+int originalSTDIN;
 
 #endif

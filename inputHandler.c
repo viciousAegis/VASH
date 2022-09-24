@@ -33,36 +33,46 @@ int parseInput(input command)
     argCount = 0;
 
     redirections = (input*) calloc(2, sizeof(input));
-    
+
     for(char* word = strtok(NULL, " \t"); word; word = strtok(NULL, " \t"))
     {
+
+
+        arguments[argCount] = (input) calloc(strlen(word), sizeof(char));
+        strcpy(arguments[argCount++], word);
+
         if(!strcmp(word, "<"))
         {
+            arguments[argCount] = (input) calloc(strlen(word), sizeof(char));
+
             redirections[0] = word;
             isInputRedirected = 1;
             strcpy(inputFile, strtok(NULL, " \t"));
+            strcpy(arguments[argCount++], inputFile);
             redirections[1] = inputFile;
         }
         else if(!strcmp(word, ">"))
         {
+            arguments[argCount] = (input) calloc(strlen(word), sizeof(char));
+            
             redirections[0] = word;
             isOutputRedirected = 1;
             strcpy(outputFile, strtok(NULL, " \t"));
+            strcpy(arguments[argCount++], outputFile);
             redirections[1] = outputFile;
         }
         else if(!strcmp(word, ">>"))
         {
+            arguments[argCount] = (input) calloc(strlen(word), sizeof(char));
+
             redirections[0] = word;
             isOutputAppended = 1;
             strcpy(outputFile, strtok(NULL, " \t"));
+            strcpy(arguments[argCount++], outputFile);
             redirections[1] = outputFile;
         }
-        else
-        {
-            arguments[argCount] = (input) calloc(strlen(word), sizeof(char));
-            strcpy(arguments[argCount++], word);
-        }
     }
+
     if(argCount == 0)
     {
         arguments[argCount] = (input) calloc(1, sizeof(char));
@@ -145,6 +155,7 @@ void handleInput()
             testSystemCommand();
         }
 
+        resetRedirection();
     }
 }
 
@@ -245,7 +256,7 @@ void resetRedirection()
 
     if(isInputRedirected)
     {
-        close(inputFD);
+        dup2(originalSTDIN, STDIN_FILENO);
     }
 
     isInputRedirected = 0;
@@ -258,7 +269,6 @@ void resetRedirection()
 
 int handleRedirection()
 {
-
     if(isInputRedirected)
     {
         inputFD = open(inputFile, O_RDONLY);
@@ -268,6 +278,7 @@ int handleRedirection()
             printErrorMsg("Error: File not found\n");
             return -1;
         }
+
         takeInputFromFile();
     }
 
@@ -297,28 +308,33 @@ int handleRedirection()
 
 void takeInputFromFile()
 {
-    char* fileInp = (char*) calloc(1024, sizeof(char));
-    read(inputFD, fileInp, 1024);
-
-    free(arguments);
-    arguments  = (input*) calloc(1024, sizeof(input));
-    argCount = 0;
-
-    for(char* word = strtok(fileInp, " \t"); word; word = strtok(NULL, " \t"))
+    originalSTDIN = dup(STDIN_FILENO);
+    if(dup2(inputFD, STDIN_FILENO) < 0)
     {
-        arguments[argCount] = (input) calloc(strlen(word), sizeof(char));
-        strcpy(arguments[argCount++], word);
+        printErrorMsg("Error: Could not redirect input\n");
     }
+    close(inputFD);
+
+    clearArguments();
 }
+
 
 void redirectOutputToFile()
 {
-    dup2(STDOUT_FILENO, originalSTDOUT);
+    originalSTDOUT = dup(STDOUT_FILENO);
 
     if(dup2(outputFD, STDOUT_FILENO) < 0)
     {
         printErrorMsg("Error: File not duplicated\n");
-        return;
     }
     close(outputFD);
+}
+
+void clearArguments()
+{
+    for(int i = 0; i < argCount; i++)
+    {
+        free(arguments[i]);
+    }
+    argCount = 0;
 }

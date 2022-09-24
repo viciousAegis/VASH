@@ -16,25 +16,12 @@ void parseSystemInput()
 {
     allArgs = (input) calloc(1024, sizeof(char));
     sprintf(allArgs,"%s", commandWord);
-    if(isInputRedirected)
+
+    for(int i = 0; i < argCount; i++)
     {
-        sprintf(allArgs, "%s %s %s", allArgs, redirections[0], redirections[1]);
+        sprintf(allArgs, "%s %s", allArgs, arguments[i]);
     }
-    if(isOutputRedirected)
-    {
-        sprintf(allArgs, "%s %s %s", allArgs, redirections[0], redirections[1]);
-    }
-    else if(isOutputAppended)
-    {
-        sprintf(allArgs, "%s %s %s", allArgs, redirections[0], redirections[1]);
-    }
-    else
-    {
-        for(int i = 0; i < argCount; i++)
-        {
-            sprintf(allArgs, "%s %s", allArgs, arguments[i]);
-        }
-    }
+
     checkIfBackgroundProcess();
 
     if(isBackgroundProcess)

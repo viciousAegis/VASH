@@ -1,1 +1,20 @@
-cmd_history.txt
+c
+cat
+cat < cmd_history.txt > out.txt
+cat < cmd_history.txt > out.txt
+cat < out.txt
+make
+q
+q
+q
+q
+q
+q
+q
+q
+sort
+sort < cmd_history.txt > out.txt
+sort < cmd_history.txt > out.txt
+sort < cmd_history.txt > out.txt
+sort < cmd_history.txt > out.txt
+sort < cmd_history.txt > out.txt

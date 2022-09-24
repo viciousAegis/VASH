@@ -1,20 +1,20 @@
-sig 2 9
-vim &
-sleep 200&
 q
-jobs
-sig 2 2
-sig 1 9
-sig 3 9
 jobs
 vim &
-sleep 100&
-sig 2 9
+sleep 200 &
+sleep 100 &
 q
-make
-[Aq
-sig 2 9
+sort < cmd_history.txt > out.txt
+c
 q
-sig 2 9
-jobs
-vim this&
+cat < out.txt
+cat < cmd_history.txt > out.txt
+q
+sort < cmd_history.txt > out.txt
+q
+cat < cmd_history.txt > out.txt
+sort < cmd_history.txt > out.txt
+q
+sort < cmd_history.txt > out.txt
+q
+sort < cmd_history.txt > out.txt

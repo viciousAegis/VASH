@@ -2,12 +2,13 @@
 
 int main()
 {
+    resetRedirection();
+
     clearDisplay();
 
-    // load the history file
-    
     initialPrompt();
 
+    // load the history file
     loadHistory();
 
     //background PIDs List
@@ -32,9 +33,6 @@ int main()
         //check for signals
         catchSignals();
         
-        //reset the redirections
-        resetRedirection();
-
         //check which directory user is in and prompt user
         currDirectory = checkDirectory();
         prompt(currDirectory);
