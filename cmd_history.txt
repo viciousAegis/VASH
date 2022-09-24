@@ -1,20 +1,20 @@
-fdsd
-ls
-sleep 5
-z
-sleep 5
-sleep 6
-sleep 5
+sig 2 9
+vim &
+sleep 200&
 q
-sleep 5
-sleep 4
-sleep 20
-sleep 30
-sleep 4
-sleep 5
-sleep 70
-sleep 6
-sleep 5
+jobs
+sig 2 2
+sig 1 9
+sig 3 9
+jobs
+vim &
+sleep 100&
+sig 2 9
 q
-sleep 5
-sleep 4
+make
+[Aq
+sig 2 9
+q
+sig 2 9
+jobs
+vim this&

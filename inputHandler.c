@@ -128,6 +128,14 @@ void handleInput()
         {
             performDiscover();
         }
+        else if(!strcmp(commandWord, "jobs"))
+        {
+            printJobs(backgroundPIDs);
+        }
+        else if(!strcmp(commandWord, "sig"))
+        {
+            sendSignalToProcess();
+        }
         else if(!strcmp(commandWord,"pinfo"))
         {
             performPinfo();

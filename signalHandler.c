@@ -7,6 +7,23 @@ void catchSignals()
     signal(SIGCHLD, waitForBackgroundChild);
 }
 
+void sendSignalToProcess()
+{
+    int procNum = atoi(arguments[0]);
+    int sigNum = atoi(arguments[1]);
+
+    int pid = LL_search_processNo(backgroundPIDs, procNum);
+
+    if(pid > 0)
+    {
+        kill(pid, sigNum);
+    }
+    else
+    {
+        printf("No such process exists\n");
+    }
+}
+
 void sigIntHandler()
 {
     if(foregroundPID > 0)

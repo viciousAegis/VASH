@@ -1,12 +1,23 @@
 #include "headers.h"
 
 // Initalize and return a pointer to a linked list node
-LL_Node *LL_Node_init(DataType val)
+LL_Node *LL_Node_init(DataType* val)
 {
     LL_Node *n = malloc(sizeof(LL_Node));
-    n->val = val;
+    n->data = (DataType*) malloc(sizeof(DataType));
+    n->data = val;
     n->next = NULL;
     return n;
+}
+
+// initilase and return pointer to datatype
+DataType* initDataType(int pid, char* name, int processNumber)
+{
+    DataType* data = (DataType*) malloc(sizeof(DataType));
+    data->pid = pid;
+    data->name = name;
+    data->processNumber = processNumber;
+    return data;
 }
 
 // Initalize and return a pointer to a linked list
@@ -34,7 +45,7 @@ int LL_Size(LL *l)
 // This means that the node at position p will have value = val
 // after this operation
 // p can range from [0, size]
-void LL_add(LL *l, int p, DataType val)
+void LL_add(LL *l, int p, DataType* val)
 {
     int i = 0;
     LL_Node *curr = l->head;
@@ -61,12 +72,12 @@ void LL_add(LL *l, int p, DataType val)
 
 // Search for a value in a linked list
 // Returns 1 if found, 0 if not found
-int LL_search(LL *l, DataType val)
+int LL_search(LL *l, int pid)
 {
     LL_Node *curr = l->head;
     while (curr != NULL)
     {
-        if (curr->val == val)
+        if (curr->data->pid == pid)
         {
             return 1;
         }
@@ -74,15 +85,28 @@ int LL_search(LL *l, DataType val)
     }
     return 0;
 }
+int LL_search_processNo(LL *l, int processNumber)
+{
+    LL_Node *curr = l->head;
+    while (curr != NULL)
+    {
+        if (curr->data->processNumber == processNumber)
+        {
+            return curr->data->pid;
+        }
+        curr = curr->next;
+    }
+    return 0;
+}
 
 // Deletes the first value = val from the linked list
-void LL_delete(LL *l, DataType val)
+void LL_delete(LL *l, int pid)
 {
     LL_Node *curr = l->head;
     LL_Node *prev = NULL;
     while (curr != NULL)
     {
-        if (curr->val == val)
+        if (curr->data->pid == pid)
         {
             if (prev != NULL)
             {
@@ -113,8 +137,36 @@ void LL_print(LL *l)
     LL_Node *curr = l->head;
     while (curr != NULL)
     {
-        printf(">%d ", curr->val);
+        printf("[%d] %s - %d", curr->data->processNumber, curr->data->name, curr->data->pid);
         curr = curr->next;
     }
     printf("\n");
+}
+
+void printJobs(LL* l)
+{
+    DataType* jobsArray = (DataType*) calloc(l->size ,sizeof(DataType));
+
+    LL_Node* curr = l->head;
+    int i = 0;
+    while(curr != NULL)
+    {
+        jobsArray[i++] = *curr->data;
+        curr = curr->next;
+    }
+
+    qsort(jobsArray, l->size, sizeof(DataType), compareJobs);
+
+    for(int i = 0; i < l->size; i++)
+    {
+        printf("[%d] %s - %d\n", jobsArray[i].processNumber, jobsArray[i].name, jobsArray[i].pid);
+    }
+}
+
+int compareJobs(const void* a, const void* b)
+{
+    DataType* jobA = (DataType*) a;
+    DataType* jobB = (DataType*) b;
+
+    return strcmp(jobA->name, jobB->name);
 }

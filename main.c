@@ -24,6 +24,9 @@ int main()
 
     childCaught = 0;
 
+    // initialise number of background processes
+    processCount = 0;
+
     while (1)
     {
         //check for signals

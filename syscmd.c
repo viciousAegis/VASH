@@ -182,8 +182,9 @@ void execBackgroundProcess()
 
     if(pid > 0)
     {
-        LL_add(backgroundPIDs, 0, pid);
-        printf("[%d]\n", pid);
+        DataType* process = initDataType(pid, backArgsArr[0], ++processCount);
+        LL_add(backgroundPIDs, 0, process);
+        printf("[%d] %d\n", processCount, pid);
         // parent process
         // do not wait for child to finish
     }

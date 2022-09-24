@@ -7,6 +7,8 @@ void sigIntHandler();
 
 void sigTstpHandler();
 
+void sendSignalToProcess();
+
 int foregroundPID;
 
 #endif

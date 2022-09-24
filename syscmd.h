@@ -1,6 +1,8 @@
 #ifndef __SYSCMD_H
 #define __SYSCMD_H
 
+int processCount;
+
 int isBackgroundProcess;
 
 int childCaught;
