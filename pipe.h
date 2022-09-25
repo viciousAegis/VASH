@@ -3,6 +3,8 @@
 
 int pipeCount;
 
+int inPipe;
+
 int checkPipe(char*);
 
 void performPipe(char*);

@@ -107,8 +107,8 @@ void handleInput()
         {
             continue;
         }
-
         addToHistory();
+
         int rdFlag = handleRedirection();
         if(rdFlag == -1)
         {
@@ -172,8 +172,9 @@ void handleInput()
         {
             testSystemCommand();
         }
-
-        resetRedirection();
+        
+        if(!inPipe)
+            resetRedirection();
     }
 }
 

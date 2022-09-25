@@ -1,20 +1,20 @@
-cat README.md
-jdshgoishdg
-cat README.md
+tail -2
 q
-cat README.md
-cat cmd_history.txt
-c
+cat < vash/
+cat < cmd_history.txt
+cat
 q
-cat cmd_history.tx
+cat
+<
 q
-cat cmd_history.txt
+cat < cmd_history.txt
+wc -l
 q
-cat cmd_history.txt
-sort < cmd_history.txt
-ls
-cat cmd_history.txt
-cat c,cat c,cat cmcat cmd
+cat in.txt
 q
-cat cmd_history.txt
+cat in.txt
+q
+./
+/
+make
 q

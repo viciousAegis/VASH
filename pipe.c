@@ -54,6 +54,7 @@ void performPipe(input command)
     {
         int fd[2];
         pipe(fd);
+        inPipe = 0;
 
         strcpy(bufferInput, pipeToken);
         pipeToken = strtok(NULL, "|");
@@ -71,9 +72,9 @@ void performPipe(input command)
 
             if(i != pipeCount)
             {
+                inPipe = 1;
                 dup2(fd[1], STDOUT_FILENO);
             }
-
             handleInput();
             exit(0);
         }

@@ -371,17 +371,21 @@ void fg()
         printErrorMsg("fg: invalid job number\n");
         return;
     }
-
+    
     kill(jobPid, SIGCONT);
+    LL_delete(backgroundPIDs, jobPid);
 
-    signal(SIGTTOU, SIG_IGN), signal(SIGTTOU, SIG_IGN);
+    signal(SIGTTOU, SIG_IGN), signal(SIGTTIN, SIG_IGN);
     tcsetpgrp(STDIN_FILENO, jobPid);
 
     int wstat;
     waitpid(jobPid, &wstat, WUNTRACED);
+    time_t endTime = time(NULL);
+    
+    timeElapsedSinceChildStart = startTime - endTime;
 
     tcsetpgrp(STDIN_FILENO, getpid());
-    signal(SIGTTOU, SIG_DFL), signal(SIGTTOU, SIG_DFL);
+    signal(SIGTTOU, SIG_DFL), signal(SIGTTIN, SIG_DFL);
 
     if(!WIFSTOPPED(wstat))
     {
@@ -390,10 +394,5 @@ void fg()
     else
     {
         printErrorMsg("fg: process stopped\n");
-    }
-
-    if(WTERMSIG(wstat) || WEXITSTATUS(wstat))
-    {
-        printErrorMsg("fg: process exited abnormally\n");
     }
 }

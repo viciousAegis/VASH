@@ -3,8 +3,8 @@
 int pt = 0;
 
 void die(const char *s) {
-    perror(s);
-    exit(1);
+    // perror(s);
+    // exit(1);
 }
 
 struct termios orig_termios;
@@ -35,10 +35,20 @@ void autocomplete()
     char* input = (char*) calloc(1024, sizeof(char));
     strcpy(input, bufferInput);
 
+    int argsTillNowCount = 0;
+    char** argsTillNow = (char**) calloc(1024, sizeof(char*));
 
-    char* token = strtok(input, " ");
+    for(char* word = strtok(input, " "); word; word = strtok(NULL, " "))
+    {
+        argsTillNow[argsTillNowCount++] = word;
+    }
 
-    token = strtok(NULL, " ");
+    char* token = argsTillNow[argsTillNowCount - 1];
+
+    if(strchr("<>|", token[0]))
+    {
+        token = NULL;
+    }
 
     initFileNames();
     initMyDir(".");
@@ -84,15 +94,22 @@ void autocomplete()
         strcpy(toComplete, matchedFiles[0] + strlen(token));
         if(strchr(toComplete, '/'))
         {
-            printf("%s", toComplete);
+            for(int i = 0; i < strlen(toComplete); i++)
+            {
+                bufferInput[pt++] = toComplete[i];
+                printf("%c", toComplete[i]);
+            }
         }
         else
         {
-            printf("%s ", toComplete);
+            for(int i = 0; i < strlen(toComplete); i++)
+            {
+                bufferInput[pt++] = toComplete[i];
+                printf("%c", toComplete[i]);
+            }
+            bufferInput[pt++] = ' ';
+            printf(" ");
         }
-        sprintf(bufferInput, "%s%s", bufferInput, toComplete);
-        sprintf(toComplete, "%s ", toComplete);
-        pt+=strlen(toComplete);
         return;
     }
 
