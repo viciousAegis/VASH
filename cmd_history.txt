@@ -1,20 +1,20 @@
+wc -l
 q
-jobs
-vim &
-sleep 200 &
-sleep 100 &
+qq
+ls
+echo this
+q
+echo this > out.txt
+ls > out.txt
+w > out.txt
+w
+sort < cmd_history.txt > out.txt
+sort < cmd_history.txt
 q
 sort < cmd_history.txt > out.txt
-c
+ls > out.txt
 q
-cat < out.txt
-cat < cmd_history.txt > out.txt
+ls > out.txt
 q
-sort < cmd_history.txt > out.txt
+ls > out.txt
 q
-cat < cmd_history.txt > out.txt
-sort < cmd_history.txt > out.txt
-q
-sort < cmd_history.txt > out.txt
-q
-sort < cmd_history.txt > out.txt

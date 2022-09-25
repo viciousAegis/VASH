@@ -34,5 +34,6 @@
 #include "dll.h"
 #include "pinfo.h"
 #include "signalHandler.h"
+#include "pipe.h"
 
 #endif

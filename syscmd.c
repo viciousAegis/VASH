@@ -84,6 +84,8 @@ void testSystemCommand()
     // concatenate all arguments with command word
     parseSystemInput();
 
+    cmdInputName = (input) calloc(1024, sizeof(char));
+
     if(isBackgroundProcess)
     {
         execBackgroundProcess();
@@ -101,6 +103,11 @@ void testSystemCommand()
 
 void execForegroundProcess()
 {
+    for(int i = 0; i < foreArgsCount; i++)
+    {
+        sprintf(cmdInputName, "%s %s", cmdInputName, foreArgsArr[i]);
+    }
+
     startTime = time(NULL);
     //fork a child process
     pid_t pid = fork();;
@@ -140,6 +147,11 @@ void execForegroundProcess()
 
 void execBackgroundProcess()
 {
+    for(int i = 0; i < backArgsCount; i++)
+    {
+        sprintf(cmdInputName, "%s %s", cmdInputName, backArgsArr[i]);
+    }
+
     //fork a child process
     time_t startTime = time(NULL);
     pid_t pid = fork();;
@@ -169,7 +181,7 @@ void execBackgroundProcess()
 
     if(pid > 0)
     {
-        DataType* process = initDataType(pid, backArgsArr[0], ++processCount);
+        DataType* process = initDataType(pid, cmdInputName, ++processCount);
         LL_add(backgroundPIDs, 0, process);
         printf("[%d] %d\n", processCount, pid);
         // parent process
@@ -208,4 +220,37 @@ void waitForBackgroundChild()
                 fflush(stdout);
             }
     }
+}
+
+void printJobs(LL* l)
+{
+    DataType* jobsArray = (DataType*) calloc(l->size ,sizeof(DataType));
+
+    LL_Node* curr = l->head;
+    int i = 0;
+    while(curr != NULL)
+    {
+        jobsArray[i++] = *curr->data;
+        curr = curr->next;
+    }
+
+    qsort(jobsArray, l->size, sizeof(DataType), compareJobs);
+
+    for(int i = 0; i < l->size; i++)
+    {
+        printf("[%d] %s - %d\n", jobsArray[i].processNumber, jobsArray[i].name, jobsArray[i].pid);
+    }
+}
+
+int compareJobs(const void* a, const void* b)
+{
+    DataType* jobA = (DataType*) a;
+    DataType* jobB = (DataType*) b;
+
+    return strcmp(jobA->name, jobB->name);
+}
+
+void fg()
+{
+    
 }

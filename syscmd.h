@@ -9,6 +9,8 @@ int childCaught;
 
 time_t startTime;
 
+input cmdInputName;
+
 void parseSystemInput();
 
 void checkIfBackgroundProcess();
@@ -20,5 +22,7 @@ void execBackgroundProcess();
 void execForegroundProcess();
 
 void waitForBackgroundChild();
+
+void fg();
 
 #endif

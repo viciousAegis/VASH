@@ -142,31 +142,3 @@ void LL_print(LL *l)
     }
     printf("\n");
 }
-
-void printJobs(LL* l)
-{
-    DataType* jobsArray = (DataType*) calloc(l->size ,sizeof(DataType));
-
-    LL_Node* curr = l->head;
-    int i = 0;
-    while(curr != NULL)
-    {
-        jobsArray[i++] = *curr->data;
-        curr = curr->next;
-    }
-
-    qsort(jobsArray, l->size, sizeof(DataType), compareJobs);
-
-    for(int i = 0; i < l->size; i++)
-    {
-        printf("[%d] %s - %d\n", jobsArray[i].processNumber, jobsArray[i].name, jobsArray[i].pid);
-    }
-}
-
-int compareJobs(const void* a, const void* b)
-{
-    DataType* jobA = (DataType*) a;
-    DataType* jobB = (DataType*) b;
-
-    return strcmp(jobA->name, jobB->name);
-}

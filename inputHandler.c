@@ -1,8 +1,5 @@
 #include "headers.h"
 
-input* commands;
-int cmdCount;
-
 int getCommands()
 {
     // handle pressing enter
@@ -38,11 +35,14 @@ int parseInput(input command)
     {
 
 
-        arguments[argCount] = (input) calloc(strlen(word), sizeof(char));
-        strcpy(arguments[argCount++], word);
+        // arguments[argCount] = (input) calloc(strlen(word), sizeof(char));
+        // strcpy(arguments[argCount++], word);
 
         if(!strcmp(word, "<"))
         {
+            arguments[argCount] = (input) calloc(strlen(word), sizeof(char));
+            strcpy(arguments[argCount++], word);
+            
             arguments[argCount] = (input) calloc(strlen(word), sizeof(char));
 
             redirections[0] = word;
@@ -53,23 +53,28 @@ int parseInput(input command)
         }
         else if(!strcmp(word, ">"))
         {
-            arguments[argCount] = (input) calloc(strlen(word), sizeof(char));
+            // arguments[argCount] = (input) calloc(strlen(word), sizeof(char));
             
             redirections[0] = word;
             isOutputRedirected = 1;
             strcpy(outputFile, strtok(NULL, " \t"));
-            strcpy(arguments[argCount++], outputFile);
+            // strcpy(arguments[argCount++], outputFile);
             redirections[1] = outputFile;
         }
         else if(!strcmp(word, ">>"))
         {
-            arguments[argCount] = (input) calloc(strlen(word), sizeof(char));
+            // arguments[argCount] = (input) calloc(strlen(word), sizeof(char));
 
             redirections[0] = word;
             isOutputAppended = 1;
             strcpy(outputFile, strtok(NULL, " \t"));
-            strcpy(arguments[argCount++], outputFile);
+            // strcpy(arguments[argCount++], outputFile);
             redirections[1] = outputFile;
+        }
+        else
+        {
+            arguments[argCount] = (input) calloc(strlen(word), sizeof(char));
+            strcpy(arguments[argCount++], word);
         }
     }
 
@@ -91,6 +96,12 @@ void handleInput()
 
     for(int i = 0; i < cmdCount; i++)
     {
+        if(checkPipe(commands[i]))
+        {
+            performPipe(commands[i]);
+            continue;
+        }
+
         int inputFlag = parseInput(commands[i]);
         if(inputFlag == -1)
         {
@@ -98,7 +109,6 @@ void handleInput()
         }
 
         addToHistory();
-
         int rdFlag = handleRedirection();
         if(rdFlag == -1)
         {
@@ -317,7 +327,6 @@ void takeInputFromFile()
 
     clearArguments();
 }
-
 
 void redirectOutputToFile()
 {

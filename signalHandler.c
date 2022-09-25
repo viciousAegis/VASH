@@ -41,11 +41,13 @@ void sigTstpHandler()
 {
     if(foregroundPID > 0)
     {
-        LL_add(backgroundPIDs, 0, foregroundPID);
+        DataType* process = initDataType(foregroundPID, cmdInputName, ++processCount);
+        LL_add(backgroundPIDs, 0, process);
         kill(foregroundPID, SIGTSTP);
         foregroundPID = 0;
         return;
     }
+
     write(1, "\n", 1);
     prompt(currDirectory);
     fflush(stdout);

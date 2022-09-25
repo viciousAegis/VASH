@@ -37,7 +37,6 @@ int main()
         currDirectory = checkDirectory();
         prompt(currDirectory);
 
-
         bufferInput = (input) calloc(1024, sizeof(char));
         if (fgets(bufferInput, 1024, stdin) != NULL){
             handleInput();

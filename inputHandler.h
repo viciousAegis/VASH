@@ -43,6 +43,9 @@ void clearArguments();
 char* inputFile;
 char* outputFile;
 
+input* commands;
+int cmdCount;
+
 FILE* inputFD;
 FILE* outputFD;
 
