@@ -91,7 +91,7 @@ void printPinfo()
 char* getProcessStatus(int givenPid)
 {
     path procFilePath = (path) calloc(1024, sizeof(char));
-    sprintf(procFilePath, "/proc/%d/stat", pid);
+    sprintf(procFilePath, "/proc/%d/stat", givenPid);
 
     FILE* file = fopen(procFilePath, "r");
     if(file == NULL)

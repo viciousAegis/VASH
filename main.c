@@ -30,7 +30,77 @@ void enableRawMode() {
 
 void autocomplete()
 {
-    printf("Autocomplete");
+    char* input = (char*) calloc(1024, sizeof(char));
+    strcpy(input, bufferInput);
+
+
+    char* token = strtok(input, " ");
+
+    token = strtok(NULL, " ");
+
+    initFileNames();
+    initMyDir(".");
+
+    fileName* matchedFiles = (fileName*) calloc(1024, sizeof(fileName));
+    int matchCount = 0;
+
+    if(token == NULL)
+    {
+        printf("\n");
+        for(int i = 0; i < lsFileCount; i++)
+        {
+            if(areDirs[i])
+            {
+                printf("%s/\n", fileNames[i]);
+                continue;
+            }
+            printf("%s\n", fileNames[i]);
+        }
+        prompt(currDirectory);
+        printf("%s", bufferInput);
+        return;
+    }
+
+    for(int i = 0; i < lsFileCount; i++)
+    {
+        if(!strncmp(token, fileNames[i], strlen(token)))
+        {
+            matchedFiles[matchCount] = (fileName) calloc(1024, sizeof(char));
+            if(areDirs[i])
+            {
+                sprintf(matchedFiles[matchCount++], "%s/", fileNames[i]);
+                continue;
+            }
+            strcpy(matchedFiles[matchCount++], fileNames[i]);
+        }
+    }
+
+    // for one file
+    if(matchCount == 1)
+    {
+        char* toComplete = (char*) calloc(1024, sizeof(char));
+        strcpy(toComplete, matchedFiles[0] + strlen(token));
+        if(strchr(toComplete, '/'))
+        {
+            printf("%s", toComplete);
+        }
+        else
+        {
+            printf("%s ", toComplete);
+        }
+        sprintf(bufferInput, "%s%s", bufferInput, toComplete);
+
+        return;
+    }
+
+    // multipleFiles
+    printf("\n");
+    for(int i = 0; i < matchCount; i++)
+    {
+        printf("%s\n", matchedFiles[i]);
+    }
+    prompt(currDirectory);
+    printf("%s", bufferInput);
 }
 
 int main()
@@ -107,7 +177,6 @@ int main()
                         printf("\b \b");
                     }
                 } else if (c == 9) { // TAB character
-                    bufferInput[pt++] = c;
                     autocomplete();
                 } else if (c == 4) {
                     exit(0);
@@ -120,5 +189,7 @@ int main()
             }
         }
         disableRawMode();
+
+        handleInput();
     }
 }

@@ -13,14 +13,13 @@
     ls dir dir dir
 */
 
-fileName* fileNames;
 /*
 0- file
 1- directory
 -1 - executable
 */
-int* areDirs;
-int fileCount = 0;
+
+lsFileCount = 0;
 
 char* flags;
 
@@ -167,10 +166,10 @@ int initMyDir(path dirPath)
 
     if ((dir = opendir(dirPath)) != NULL)
     {
-        fileCount = 0;
+        lsFileCount = 0;
         while ((ent = readdir(dir)) != NULL)
         {
-            strcpy(fileNames[fileCount++], ent->d_name);
+            strcpy(fileNames[lsFileCount++], ent->d_name);
         }
         closedir(dir);
     }
@@ -179,9 +178,9 @@ int initMyDir(path dirPath)
         return -1;
     }
 
-    qsort(fileNames, fileCount, sizeof(fileName), compare);
+    qsort(fileNames, lsFileCount, sizeof(fileName), compare);
 
-    for(int i = 0; i < fileCount; i++)
+    for(int i = 0; i < lsFileCount; i++)
     {
         path filePath = (path) calloc(1024, sizeof(char));
         sprintf(filePath, "%s/%s", dirPath, fileNames[i]);
@@ -206,7 +205,7 @@ int initMyDir(path dirPath)
 
 void printDir()
 {
-    for(int i = 0; i < fileCount; i++)
+    for(int i = 0; i < lsFileCount; i++)
     {
         if(fileNames[i][0] != '.')
         {
@@ -232,7 +231,7 @@ void printDir()
 
 void printAllDir()
 {
-    for(int i = 0; i < fileCount; i++)
+    for(int i = 0; i < lsFileCount; i++)
     {
         if(areDirs[i] == 1)
         {
@@ -259,7 +258,7 @@ void printAllDir()
 void printDirWithInfo(path dirPath, int isAll)
 {
     int blockSize = 0;
-    for(int i = 0; i < fileCount; i++)
+    for(int i = 0; i < lsFileCount; i++)
     {
         if(!isAll)
         {
@@ -275,7 +274,7 @@ void printDirWithInfo(path dirPath, int isAll)
 
     printf("total %d\n", blockSize);
 
-    for(int i = 0; i < fileCount; i++)
+    for(int i = 0; i < lsFileCount; i++)
     {
         if(!isAll)
         {
@@ -388,7 +387,7 @@ void handleFiles(char* file)
 
     initMyDir(".");
 
-    for(int i = 0; i < fileCount; i++)
+    for(int i = 0; i < lsFileCount; i++)
     {
         if(!strcmp(file, fileNames[i]))
         {
