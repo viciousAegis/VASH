@@ -147,11 +147,6 @@ int main()
 
         bufferInput = (input) calloc(1024, sizeof(char));
 
-        // if (fgets(bufferInput, 1024, stdin) != NULL){
-        //     handleInput();
-        // } else {
-        //     exit(0);
-        // }
         int pt = 0;
         while (read(STDIN_FILENO, &c, 1) == 1) {
             if (iscntrl(c)) {
