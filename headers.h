@@ -19,6 +19,8 @@
 #include <sys/times.h>
 #include <sys/wait.h>
 #include <sys/resource.h>
+#include <termios.h>
+#include <ctype.h>
 
 #include "prompt.h"
 #include "echo.h"
