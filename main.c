@@ -1,5 +1,7 @@
 #include "headers.h"
 
+int pt = 0;
+
 void die(const char *s) {
     perror(s);
     exit(1);
@@ -89,7 +91,8 @@ void autocomplete()
             printf("%s ", toComplete);
         }
         sprintf(bufferInput, "%s%s", bufferInput, toComplete);
-
+        sprintf(toComplete, "%s ", toComplete);
+        pt+=strlen(toComplete);
         return;
     }
 
@@ -147,7 +150,7 @@ int main()
 
         bufferInput = (input) calloc(1024, sizeof(char));
 
-        int pt = 0;
+        pt = 0;
         while (read(STDIN_FILENO, &c, 1) == 1) {
             if (iscntrl(c)) {
                 if (c == 10)

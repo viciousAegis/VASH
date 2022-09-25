@@ -1,20 +1,20 @@
-cd ..
-fg 1
-jobs
-ls
+cat README.md
+jdshgoishdg
+cat README.md
 q
+cat README.md
+cat cmd_history.txt
+c
+q
+cat cmd_history.tx
+q
+cat cmd_history.txt
+q
+cat cmd_history.txt
+sort < cmd_history.txt
 ls
 cat cmd_history.txt
-cat headers.h
+cat c,cat c,cat cmcat cmd
 q
-cat headers.h
-c
+cat cmd_history.txt
 q
-cat headers.h
-q
-cat lines.txt
-c
-q
-cat lines.txt
-q
-cat lines.txt
