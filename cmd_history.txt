@@ -1,3 +1,16 @@
+jobs
+sleep 10
+jobs
+q
+jobs -l
+jobs
+sleep 10 &
+jobs
+q
+jobs
+sleep 10&
+jobs -l
+jobs
 wc -l
 q
 qq
@@ -5,16 +18,3 @@ ls
 echo this
 q
 echo this > out.txt
-ls > out.txt
-w > out.txt
-w
-sort < cmd_history.txt > out.txt
-sort < cmd_history.txt
-q
-sort < cmd_history.txt > out.txt
-ls > out.txt
-q
-ls > out.txt
-q
-ls > out.txt
-q

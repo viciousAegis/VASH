@@ -87,3 +87,39 @@ void printPinfo()
     printf("Memory : %lu\n", memory);
     printf("Executable Path : %s\n", exePath);
 }
+
+char* getProcessStatus(int givenPid)
+{
+    path procFilePath = (path) calloc(1024, sizeof(char));
+    sprintf(procFilePath, "/proc/%d/stat", pid);
+
+    FILE* file = fopen(procFilePath, "r");
+    if(file == NULL)
+    {
+        printErrorMsg("Error: No such file\n");
+        return NULL;
+    }
+    
+    char* statContents = (char*) calloc(1024, sizeof(char));
+    char* actualStatContents = (char*) calloc(1024, sizeof(char));
+
+    fgets(statContents,1024,file);
+
+    strtok(statContents,")");
+    actualStatContents = strtok(NULL, ")");
+
+    int statCount = 0;
+
+    status = (char*) calloc(32, sizeof(char));
+
+    for(char* out = strtok(actualStatContents, " "); out; out = strtok(NULL, " "))
+    {
+        if(statCount == 0)
+            status = out;
+        break;
+    }
+
+    fclose(file);
+
+    return status;
+}

@@ -224,6 +224,21 @@ void waitForBackgroundChild()
 
 void printJobs(LL* l)
 {
+    int runFlag = 0;
+    int stopFlag = 0;
+
+    for(int i = 0; i < argCount; i++)
+    {
+        if(strchr(arguments[i], 'r'))
+        {
+            runFlag = 1;
+        }
+        if(strchr(arguments[i], 's'))
+        {
+            stopFlag = 1;
+        }
+    }
+
     DataType* jobsArray = (DataType*) calloc(l->size ,sizeof(DataType));
 
     LL_Node* curr = l->head;
@@ -236,10 +251,66 @@ void printJobs(LL* l)
 
     qsort(jobsArray, l->size, sizeof(DataType), compareJobs);
 
-    for(int i = 0; i < l->size; i++)
+    if(runFlag + stopFlag == 0 || runFlag + stopFlag == 2)
     {
-        printf("[%d] %s - %d\n", jobsArray[i].processNumber, jobsArray[i].name, jobsArray[i].pid);
+        for(int i = 0; i < l->size; i++)
+        {
+            char* status = getStatus(getProcessStatus(jobsArray[i].pid));
+            if(status == NULL) continue;
+            printf("[%d] %s %s - %d\n", jobsArray[i].processNumber, status, jobsArray[i].name, jobsArray[i].pid);
+        }
     }
+
+    if(runFlag)
+    {
+        for(int i = 0; i < l->size; i++)
+        {
+            char* status = getStatus(getProcessStatus(jobsArray[i].pid));
+            if(status == NULL) continue;
+            if(strcmp(status, "Running") == 0)
+            {
+                printf("[%d] %s %s - %d\n", jobsArray[i].processNumber, status, jobsArray[i].name, jobsArray[i].pid);
+            }
+        }
+    }
+    
+    if(stopFlag)
+    {
+        for(int i = 0; i < l->size; i++)
+        {
+            char* status = getStatus(getProcessStatus(jobsArray[i].pid));
+            if(status == NULL) continue;
+            if(strcmp(status, "Stopped") == 0)
+            {
+                printf("[%d] %s %s - %d\n", jobsArray[i].processNumber, status, jobsArray[i].name, jobsArray[i].pid);
+            }
+        }
+    }
+    
+}
+
+char* getStatus(char* statusSymbol)
+{
+    if(statusSymbol == NULL)
+    {
+        return NULL;
+    }
+
+    char symbol = statusSymbol[0];
+
+    char* status = (char*) calloc(1024, sizeof(char));
+
+    switch(symbol)
+    {
+        case 'R':
+            sprintf(status, "Running");
+            break;
+        default:
+            sprintf(status, "Stopped");
+            break;
+    }
+
+    return status;
 }
 
 int compareJobs(const void* a, const void* b)

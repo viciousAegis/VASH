@@ -5,4 +5,6 @@ void performPinfo();
 
 void printPinfo();
 
+char* getProcessStatus(int);
+
 #endif

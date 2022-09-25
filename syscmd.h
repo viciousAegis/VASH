@@ -23,6 +23,8 @@ void execForegroundProcess();
 
 void waitForBackgroundChild();
 
+char* getStatus(char*);
+
 void fg();
 
 #endif
