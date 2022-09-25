@@ -196,29 +196,29 @@ void waitForBackgroundChild()
 
     while((pid = waitpid(-1,&wstat,WNOHANG)) > 0)
     {
-            if(LL_empty(backgroundPIDs))
+        if(LL_empty(backgroundPIDs))
+        {
+            return;
+        }
+        if(LL_search(backgroundPIDs, pid) == 1)
+        {
+            LL_delete(backgroundPIDs, pid);
+        
+            char* outMsg = (char*) calloc(1024, sizeof(char));
+            if(WIFEXITED(wstat) == 1)
             {
-                return;
+                sprintf(outMsg,"\n%s with pid: %d exited normally\n",backArgsArr[0], pid);
+                write(1, outMsg, strlen(outMsg));
             }
-            if(LL_search(backgroundPIDs, pid) == 1)
+            else
             {
-                LL_delete(backgroundPIDs, pid);
-            
-                char* outMsg = (char*) calloc(1024, sizeof(char));
-                if(WIFEXITED(wstat) == 1)
-                {
-                    sprintf(outMsg,"\n%s with pid: %d exited normally\n",backArgsArr[0], pid);
-                    write(1, outMsg, strlen(outMsg));
-                }
-                else
-                {
-                    sprintf(outMsg,"\n%s with pid: %d exited abnormally\n",backArgsArr[0], pid);
-                    printErrorMsg(outMsg);
-                    perror(errno);
-                }
-                prompt(currDirectory);
-                fflush(stdout);
+                sprintf(outMsg,"\n%s with pid: %d exited abnormally\n",backArgsArr[0], pid);
+                printErrorMsg(outMsg);
+                perror(errno);
             }
+            prompt(currDirectory);
+            fflush(stdout);
+        }
     }
 }
 
@@ -321,7 +321,79 @@ int compareJobs(const void* a, const void* b)
     return strcmp(jobA->name, jobB->name);
 }
 
+void bg()
+{
+    if(argCount != 1)
+    {
+        printErrorMsg("bg: invalid number of arguments\n");
+        return;
+    }
+
+    int jobNumber = atoi(arguments[0]);
+
+    if(jobNumber == 0)
+    {
+        printErrorMsg("bg: invalid job number\n");
+        return;
+    }
+
+    int jobPid = LL_search_processNo(backgroundPIDs, jobNumber);
+
+    if(jobPid == 0)
+    { 
+        printErrorMsg("bg: invalid job number\n");
+        return;
+    }
+
+    kill(jobPid, SIGCONT);
+}
+
 void fg()
 {
-    
+    if(argCount != 1)
+    {
+        printErrorMsg("fg: invalid number of arguments\n");
+        return;
+    }
+
+    int jobNumber = atoi(arguments[0]);
+
+    if(jobNumber == 0)
+    {
+        printErrorMsg("fg: invalid job number\n");
+        return;
+    }
+
+    int jobPid = LL_search_processNo(backgroundPIDs, jobNumber);
+
+    if(jobPid == 0)
+    { 
+        printErrorMsg("fg: invalid job number\n");
+        return;
+    }
+
+    kill(jobPid, SIGCONT);
+
+    signal(SIGTTOU, SIG_IGN), signal(SIGTTOU, SIG_IGN);
+    tcsetpgrp(STDIN_FILENO, jobPid);
+
+    int wstat;
+    waitpid(jobPid, &wstat, WUNTRACED);
+
+    tcsetpgrp(STDIN_FILENO, getpid());
+    signal(SIGTTOU, SIG_DFL), signal(SIGTTOU, SIG_DFL);
+
+    if(!WIFSTOPPED(wstat))
+    {
+        LL_delete(backgroundPIDs, jobPid);
+    }
+    else
+    {
+        printErrorMsg("fg: process stopped\n");
+    }
+
+    if(WTERMSIG(wstat) || WEXITSTATUS(wstat))
+    {
+        printErrorMsg("fg: process exited abnormally\n");
+    }
 }

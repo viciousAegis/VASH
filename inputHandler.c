@@ -160,6 +160,14 @@ void handleInput()
         {
             performPinfo();
         }
+        else if(!strcmp(commandWord,"bg"))
+        {
+            bg();
+        }
+        else if(!strcmp(commandWord,"fg"))
+        {
+            fg();
+        }
         else
         {
             testSystemCommand();

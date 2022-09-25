@@ -27,4 +27,6 @@ char* getStatus(char*);
 
 void fg();
 
+void bg();
+
 #endif
